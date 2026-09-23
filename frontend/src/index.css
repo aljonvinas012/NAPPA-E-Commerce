@@ -1,0 +1,223 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: 'Manrope', sans-serif;
+  background-color: #FFF8EA;
+  color: #3A2A1D;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: 'Fraunces', serif;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #F1E7D4; }
+::-webkit-scrollbar-thumb { background: #CBB694; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #6F4A32; }
+
+:focus-visible {
+  outline: 2px solid #6F4A32;
+  outline-offset: 2px;
+}
+
+.container-nappa {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+.woven-pattern {
+  background-image: repeating-linear-gradient(45deg, rgba(74,51,36,0.05) 0, rgba(74,51,36,0.05) 2px, transparent 2px, transparent 10px),
+    repeating-linear-gradient(-45deg, rgba(74,51,36,0.05) 0, rgba(74,51,36,0.05) 2px, transparent 2px, transparent 10px);
+}
+
+.btn-primary {
+  background-color: #6F4A32;
+  color: #FFF8EA;
+  border-radius: 999px;
+  padding: 0.7rem 1.6rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-primary:hover { background-color: #5A3A26; transform: translateY(-1px); box-shadow: 0 8px 20px rgba(111,74,50,0.35); }
+.btn-primary:disabled { background-color: #CBB694; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.btn-secondary {
+  background-color: transparent;
+  color: #4A3324;
+  border: 1.5px solid #CBB694;
+  border-radius: 999px;
+  padding: 0.7rem 1.6rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-secondary:hover { border-color: #6F4A32; color: #6F4A32; background-color: rgba(169,128,95,0.08); }
+
+.btn-danger {
+  background-color: #E14848;
+  color: #FFF8EA;
+  border-radius: 999px;
+  padding: 0.7rem 1.6rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-danger:hover { background-color: #C93636; transform: translateY(-1px); }
+.btn-danger:disabled { background-color: #E8B4B4; cursor: not-allowed; transform: none; }
+
+.input-field {
+  width: 100%;
+  border: 1.5px solid #E7D8BC;
+  background-color: #FFFFFF;
+  border-radius: 999px;
+  padding: 0.65rem 1.1rem;
+  font-family: 'Manrope', sans-serif;
+  color: #3A2A1D;
+  transition: border-color 0.2s ease;
+}
+.input-field:focus { border-color: #A9805F; outline: none; }
+
+/* Multi-line fields and dropdowns look odd fully pill-shaped, so they get a
+   softer, more rectangular radius while single-line inputs (incl. search
+   bars) stay oval via .input-field above. */
+textarea.input-field, select.input-field {
+  border-radius: 14px;
+}
+
+/* Every <select> across the site shares .input-field, so this fixes the
+   dropdown arrow everywhere in one place: ratings filter, admin
+   add/edit-product category, admin edit-user gender, admin dashboard
+   month/year, checkout payment method, address region, and sign-up gender.
+   We draw our own small chevron instead of relying on the browser's
+   native arrow, which different browsers render flush against the very
+   edge of a pill-shaped field, making it look cut off/misplaced —
+   `background-position` below is what nudges it inward.
+*/
+select.input-field {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23A9805F' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 13px;
+  padding-right: 2.6rem;
+}
+
+.card-surface {
+  background-color: #FFFFFF;
+  border: 1px solid #F0E4CE;
+  border-radius: 18px;
+}
+
+/* ===== Scroll-reveal utility (IntersectionObserver driven, see useReveal hook) ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1);
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-left { transform: translateX(-36px); }
+.reveal-left.in-view { transform: translateX(0); }
+.reveal-right { transform: translateX(36px); }
+.reveal-right.in-view { transform: translateX(0); }
+.reveal-scale { transform: scale(.92); }
+.reveal-scale.in-view { transform: scale(1); }
+
+/* ===== Auth split-screen shell (login / register) ===== */
+.auth-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.auth-side {
+  background: linear-gradient(150deg, #4A3324, #6F4A32 60%, #8C6544);
+  background-size: 200% 200%;
+  animation: gradientShift 16s ease infinite;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px;
+  color: #FFF8EA;
+  position: relative;
+  overflow: hidden;
+}
+.auth-side::before {
+  content: ''; position: absolute; width: 320px; height: 320px; border-radius: 50%;
+  background: #E8DBC3; opacity: .18; filter: blur(70px); top: -80px; left: -80px;
+  animation: floatSlow 10s ease-in-out infinite;
+}
+.auth-side::after {
+  content: ''; position: absolute; width: 260px; height: 260px; border-radius: 50%;
+  background: #A9805F; opacity: .3; filter: blur(70px); bottom: -60px; right: -60px;
+  animation: float 9s ease-in-out infinite;
+}
+.auth-side .brand {
+  color: #FFF8EA; margin-bottom: 40px; font-size: 20px; position: relative; z-index: 2;
+  display: flex; align-items: center; gap: 12px; font-weight: 700; font-family: 'Fraunces', serif;
+}
+.auth-side .brand img { width: 44px; height: 44px; border-radius: 50%; background: #FFF8EA; box-shadow: 0 0 0 3px rgba(232,219,195,.6); }
+.auth-side h2 { font-size: 30px; font-weight: 700; line-height: 1.3; position: relative; z-index: 2; font-family: 'Fraunces', serif; }
+.auth-side p { color: rgba(255,248,234,.8); margin-top: 14px; max-width: 420px; line-height: 1.7; position: relative; z-index: 2; }
+.auth-feature-list { margin-top: 36px; position: relative; z-index: 2; }
+.auth-feature-list li { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; font-size: 14px; color: rgba(255,248,234,.92); }
+.auth-feature-list i {
+  background: rgba(232,219,195,.22); color: #E8DBC3; width: 34px; height: 34px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.auth-form-wrap { display: flex; align-items: center; justify-content: center; padding: 50px; background: #FFF8EA; }
+.auth-card { width: 100%; max-width: 440px; }
+.auth-card h1 { font-size: 26px; font-weight: 700; color: #3A2A1D; margin-bottom: 6px; }
+.auth-card .sub { color: rgba(58,42,29,.6); font-size: 14px; margin-bottom: 28px; }
+.auth-switch { text-align: center; font-size: 14px; color: rgba(58,42,29,.6); margin-top: 18px; }
+.auth-switch a { color: #6F4A32; font-weight: 700; }
+.auth-switch a:hover { text-decoration: underline; }
+
+.field-label { display: block; font-size: 13px; font-weight: 600; color: #4A3324; margin-bottom: 7px; letter-spacing: .2px; }
+.input-icon-wrap { position: relative; }
+.input-icon-wrap i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #A9805F; font-size: 14px; }
+.input-icon-wrap .input-field { padding-left: 40px; padding-right: 40px; }
+.toggle-pass { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #A9805F; z-index: 2; }
+
+.alert-banner {
+  display: flex; align-items: flex-start; gap: 10px; padding: 13px 16px; border-radius: 12px;
+  font-size: 13.5px; margin-bottom: 18px; animation: fadeInDown .4s ease both;
+}
+.alert-banner i { margin-top: 2px; flex-shrink: 0; }
+.alert-success { background: rgba(111,74,50,.12); color: #6F4A32; }
+.alert-danger { background: rgba(220,60,60,.1); color: #C0392B; }
+
+@keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-14px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 980px) {
+  .auth-shell { grid-template-columns: 1fr; }
+  .auth-side { display: none; }
+}
