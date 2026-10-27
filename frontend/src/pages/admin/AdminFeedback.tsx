@@ -81,7 +81,11 @@ const AdminFeedback = () => {
         <EmptyState title="No feedback found" message="Try a different search term or filter." />
       ) : (
         <div className="card-surface overflow-x-auto">
+<<<<<<< HEAD
           <table className="w-full text-sm min-w-[760px]">
+=======
+          <table className="w-full text-sm min-w-[760px] stack-table">
+>>>>>>> 3078575 (Improve landing page and responsive design)
             <thead>
               <tr className="text-left text-bark/50 border-b border-tan/30">
                 <th className="py-3 px-4">Product</th>
@@ -97,7 +101,11 @@ const AdminFeedback = () => {
                 const product = typeof r.product === 'object' ? r.product : null;
                 return (
                   <tr key={r._id} className="border-b border-tan/15 align-top">
+<<<<<<< HEAD
                     <td className="py-3 px-4 flex items-center gap-3">
+=======
+                    <td data-label="Product" className="py-3 px-4 flex items-center gap-3">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                       {product?.images?.[0] ? (
                         <img src={getImageUrl(product.images[0])} className="w-11 h-11 rounded-soft object-cover shrink-0" />
                       ) : (
@@ -105,11 +113,19 @@ const AdminFeedback = () => {
                       )}
                       <span className="font-medium text-ink max-w-[150px] truncate">{product?.name || 'Unknown product'}</span>
                     </td>
+<<<<<<< HEAD
                     <td className="py-3 px-4 text-bark/70 whitespace-nowrap">{r.user?.firstName} {r.user?.lastName}</td>
                     <td className="py-3 px-4"><RatingStars rating={r.rating} size={13} /></td>
                     <td className="py-3 px-4 text-bark/70 max-w-[280px]">{r.comment}</td>
                     <td className="py-3 px-4 text-bark/50 text-xs whitespace-nowrap">{new Date(r.createdAt).toLocaleDateString()}</td>
                     <td className="py-3 px-4 text-right">
+=======
+                    <td data-label="Customer" className="py-3 px-4 text-bark/70 whitespace-nowrap">{r.user?.firstName} {r.user?.lastName}</td>
+                    <td data-label="Rating" className="py-3 px-4"><RatingStars rating={r.rating} size={13} /></td>
+                    <td data-label="Comment" className="py-3 px-4 text-bark/70 max-w-[280px]">{r.comment}</td>
+                    <td data-label="Date" className="py-3 px-4 text-bark/50 text-xs whitespace-nowrap">{new Date(r.createdAt).toLocaleDateString()}</td>
+                    <td data-label="Actions" className="py-3 px-4 text-right">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                       <button
                         onClick={() => setToDelete(r)}
                         title="Delete sensitive or inappropriate comment"

@@ -147,14 +147,22 @@ const Addresses = () => {
         <form onSubmit={handleSubmit} className="space-y-3">
           <input className="input-field" placeholder="Full Name" value={form.fullName} onChange={(e) => update('fullName', e.target.value)} />
           <input className="input-field" placeholder="Phone Number" value={form.phone} onChange={(e) => update('phone', e.target.value)} />
+<<<<<<< HEAD
           <div className="grid grid-cols-2 gap-3">
+=======
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+>>>>>>> 3078575 (Improve landing page and responsive design)
             <select className="input-field !rounded-full !w-auto" value={form.region} onChange={(e) => update('region', e.target.value)}>
               <option value="" disabled>Select Region</option>
               {regions.map((r) => <option key={r} value={r}>{r}</option>)}
             </select>
             <input className="input-field" placeholder="Province" value={form.province} onChange={(e) => update('province', e.target.value)} />
           </div>
+<<<<<<< HEAD
           <div className="grid grid-cols-2 gap-3">
+=======
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+>>>>>>> 3078575 (Improve landing page and responsive design)
             <input className="input-field" placeholder="City / Municipality" value={form.city} onChange={(e) => update('city', e.target.value)} />
             <input className="input-field" placeholder="Barangay" value={form.barangay} onChange={(e) => update('barangay', e.target.value)} />
           </div>

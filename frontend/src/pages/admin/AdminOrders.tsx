@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react';
 import api, { getImageUrl } from '../../services/api';
 import type { IOrder } from '../../types';
 import LoadingSpinner from '../../components/LoadingSpinner';
+<<<<<<< HEAD
+=======
+import OrderItemsPreview, { itemsSummary, ItemsBadge } from '../../components/OrderItemsPreview';
+>>>>>>> 3078575 (Improve landing page and responsive design)
 import Modal from '../../components/Modal';
 import { useResultModal } from '../../context/ResultModalContext';
 
@@ -153,7 +157,11 @@ const AdminOrders = () => {
 
       {/* CARD-STYLE TABLE — matches the Products table design */}
       <div className="card-surface overflow-x-auto">
+<<<<<<< HEAD
         <table className="w-full text-sm min-w-[820px]">
+=======
+        <table className="w-full text-sm min-w-[820px] stack-table">
+>>>>>>> 3078575 (Improve landing page and responsive design)
           <thead>
             <tr className="text-left text-bark/50 border-b border-tan/30">
               <th className="py-3 px-4">Order</th>
@@ -169,6 +177,7 @@ const AdminOrders = () => {
               <tr><td colSpan={6} className="py-8 text-center text-bark/50 text-sm">No orders match your search.</td></tr>
             ) : filtered.map((o) => (
               <tr key={o._id} className="border-b border-tan/15">
+<<<<<<< HEAD
                 <td className="py-3 px-4 flex items-center gap-3">
                   <img
                     src={getImageUrl(o.items[0]?.image)}
@@ -189,6 +198,24 @@ const AdminOrders = () => {
                 </td>
                 <td className="py-3 px-4 text-bark/50 text-xs">{new Date(o.createdAt).toLocaleDateString()}</td>
                 <td className="py-3 px-4">
+=======
+                <td data-label="Order" className="py-3 px-4 flex items-center gap-3">
+                  <OrderItemsPreview items={o.items} />
+                  <div className="min-w-0">
+                    <p className="font-semibold text-ink">{o.orderNumber}<ItemsBadge items={o.items} /></p>
+                    <p className="text-xs text-bark/50 truncate max-w-[200px]">
+                      {itemsSummary(o.items)}
+                    </p>
+                  </div>
+                </td>
+                <td data-label="Customer" className="py-3 px-4 text-bark/70">{o.user?.firstName} {o.user?.lastName}</td>
+                <td data-label="Total" className="py-3 px-4 text-bark/70">₱{o.total.toLocaleString()}</td>
+                <td data-label="Status" className="py-3 px-4">
+                  <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${STATUS_STYLES[o.status]}`}>{o.status}</span>
+                </td>
+                <td data-label="Date" className="py-3 px-4 text-bark/50 text-xs">{new Date(o.createdAt).toLocaleDateString()}</td>
+                <td data-label="Actions" className="py-3 px-4">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                   <div className="flex justify-end gap-2">
                     <button onClick={() => setViewOrder(o)} className="btn-secondary !py-1.5 !px-3 text-xs whitespace-nowrap">
                       <i className="fas fa-eye" /> View Details

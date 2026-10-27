@@ -85,7 +85,11 @@ const Chatbot = () => {
   return (
     <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end">
       {open && (
+<<<<<<< HEAD
         <div className="mb-3 w-[90vw] max-w-sm bg-paper rounded-card shadow-card border border-tan/30 flex flex-col overflow-hidden animate-pop-in" style={{ height: 440 }}>
+=======
+        <div className="mb-3 w-[90vw] max-w-sm bg-paper rounded-card shadow-card border border-tan/30 flex flex-col overflow-hidden animate-pop-in" style={{ height: 'min(440px, 70vh)' }}>
+>>>>>>> 3078575 (Improve landing page and responsive design)
           <div className="bg-bark text-paper px-4 py-3 flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-full bg-paper/15 flex items-center justify-center text-sm">
               <i className="fas fa-leaf" />

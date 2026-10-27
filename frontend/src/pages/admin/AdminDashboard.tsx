@@ -5,6 +5,10 @@ import {
 } from 'recharts';
 import api, { getImageUrl } from '../../services/api';
 import LoadingSpinner from '../../components/LoadingSpinner';
+<<<<<<< HEAD
+=======
+import OrderItemsPreview, { itemsSummary, ItemsBadge } from '../../components/OrderItemsPreview';
+>>>>>>> 3078575 (Improve landing page and responsive design)
 
 const ranges = [
   { key: 'week', label: 'Weekly' },
@@ -340,7 +344,11 @@ const AdminDashboard = () => {
             <p className="text-sm text-bark/50">No sales data yet.</p>
           ) : (
             <div className="overflow-x-auto">
+<<<<<<< HEAD
               <table className="w-full text-sm">
+=======
+              <table className="w-full text-sm stack-table">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                 <thead>
                   <tr className="text-left text-bark/50 border-b border-tan/30">
                     <th className="py-2 pr-3">Product</th>
@@ -352,16 +360,26 @@ const AdminDashboard = () => {
                 <tbody>
                   {topBestSellers.map((b, i) => (
                     <tr key={i} className="border-b border-tan/15">
+<<<<<<< HEAD
                       <td className="py-2 pr-3 flex items-center gap-2">
+=======
+                      <td data-label="Product" className="py-2 pr-3 flex items-center gap-2">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                         <img src={getImageUrl(b.product.images?.[0])} className="w-8 h-8 rounded-soft object-cover" />
                         <div className="min-w-0">
                           <span className="font-medium text-ink block">{b.product.name}</span>
                           {b.product.sku && <span className="text-[11px] text-bark/50 font-mono">Code: {b.product.sku}</span>}
                         </div>
                       </td>
+<<<<<<< HEAD
                       <td className="py-2 pr-3">{b.unitsSold}</td>
                       <td className="py-2 pr-3">{peso(b.revenue)}</td>
                       <td className="py-2 pr-3">{b.product.stock}</td>
+=======
+                      <td data-label="Units Sold" className="py-2 pr-3">{b.unitsSold}</td>
+                      <td data-label="Revenue" className="py-2 pr-3">{peso(b.revenue)}</td>
+                      <td data-label="Stock" className="py-2 pr-3">{b.product.stock}</td>
+>>>>>>> 3078575 (Improve landing page and responsive design)
                     </tr>
                   ))}
                 </tbody>
@@ -386,7 +404,11 @@ const AdminDashboard = () => {
           <div className="card-surface p-6 text-center text-sm text-bark/50">No orders yet.</div>
         ) : (
           <div className="card-surface overflow-x-auto">
+<<<<<<< HEAD
             <table className="w-full text-sm min-w-[640px]">
+=======
+            <table className="w-full text-sm min-w-[640px] stack-table">
+>>>>>>> 3078575 (Improve landing page and responsive design)
               <thead>
                 <tr className="text-left text-bark/50 border-b border-tan/30">
                   <th className="py-3 px-4">Order</th>
@@ -399,6 +421,7 @@ const AdminDashboard = () => {
               <tbody>
                 {recentOrders.map((o: any) => (
                   <tr key={o._id} className="border-b border-tan/15">
+<<<<<<< HEAD
                     <td className="py-3 px-4 flex items-center gap-3">
                       <img
                         src={getImageUrl(o.items?.[0]?.image)}
@@ -409,13 +432,27 @@ const AdminDashboard = () => {
                         <p className="font-semibold text-ink">{o.orderNumber}</p>
                         <p className="text-xs text-bark/50 truncate max-w-[200px]">
                           {o.items?.[0]?.name}{o.items?.length > 1 ? ` +${o.items.length - 1} more item${o.items.length - 1 !== 1 ? 's' : ''}` : ''}
+=======
+                    <td data-label="Order" className="py-3 px-4 flex items-center gap-3">
+                      <OrderItemsPreview items={o.items || []} />
+                      <div className="min-w-0">
+                        <p className="font-semibold text-ink">{o.orderNumber}<ItemsBadge items={o.items || []} /></p>
+                        <p className="text-xs text-bark/50 truncate max-w-[200px]">
+                          {itemsSummary(o.items || [])}
+>>>>>>> 3078575 (Improve landing page and responsive design)
                         </p>
                         {o.items?.[0]?.sku && <p className="text-[10px] text-bark/40 font-mono">{o.items[0].sku}</p>}
                       </div>
                     </td>
+<<<<<<< HEAD
                     <td className="py-3 px-4 text-bark/70">{o.user?.firstName} {o.user?.lastName}</td>
                     <td className="py-3 px-4 text-bark/70">{peso(o.total)}</td>
                     <td className="py-3 px-4">
+=======
+                    <td data-label="Customer" className="py-3 px-4 text-bark/70">{o.user?.firstName} {o.user?.lastName}</td>
+                    <td data-label="Total" className="py-3 px-4 text-bark/70">{peso(o.total)}</td>
+                    <td data-label="Status" className="py-3 px-4">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                       <span
                         className="text-xs font-bold px-2.5 py-1 rounded-full inline-block"
                         style={{ background: `${STATUS_COLORS[o.status] || '#CBB694'}22`, color: STATUS_COLORS[o.status] || '#6F4A32' }}
@@ -423,7 +460,11 @@ const AdminDashboard = () => {
                         {o.status}
                       </span>
                     </td>
+<<<<<<< HEAD
                     <td className="py-3 px-4 text-bark/50 text-xs">{new Date(o.createdAt).toLocaleDateString()}</td>
+=======
+                    <td data-label="Date" className="py-3 px-4 text-bark/50 text-xs">{new Date(o.createdAt).toLocaleDateString()}</td>
+>>>>>>> 3078575 (Improve landing page and responsive design)
                   </tr>
                 ))}
               </tbody>
@@ -448,7 +489,11 @@ const AdminDashboard = () => {
               <div className="card-surface p-5"><p className="text-sm text-bark/50">No customer orders yet.</p></div>
             ) : (
               <div className="card-surface overflow-x-auto">
+<<<<<<< HEAD
                 <table className="w-full text-sm">
+=======
+                <table className="w-full text-sm stack-table">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                   <thead>
                     <tr className="text-left text-bark/50 border-b border-tan/30">
                       <th className="py-3 px-4">#</th>
@@ -460,14 +505,24 @@ const AdminDashboard = () => {
                   <tbody>
                     {topCustomers.map((c: any, i: number) => (
                       <tr key={i} className="border-b border-tan/15">
+<<<<<<< HEAD
                         <td className="py-3 px-4">
+=======
+                        <td data-label="#" className="py-3 px-4">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                           <div className="w-7 h-7 rounded-full bg-olive/10 text-oliveDark flex items-center justify-center text-xs font-bold">
                             {i + 1}
                           </div>
                         </td>
+<<<<<<< HEAD
                         <td className="py-3 px-4 font-medium text-ink truncate max-w-[160px]">{c.name}</td>
                         <td className="py-3 px-4 text-bark/70">{c.orders} order{c.orders !== 1 ? 's' : ''}</td>
                         <td className="py-3 px-4 font-display text-bark">{peso(c.totalSpending)}</td>
+=======
+                        <td data-label="Customer" className="py-3 px-4 font-medium text-ink truncate max-w-[160px]">{c.name}</td>
+                        <td data-label="Orders" className="py-3 px-4 text-bark/70">{c.orders} order{c.orders !== 1 ? 's' : ''}</td>
+                        <td data-label="Spent" className="py-3 px-4 font-display text-bark">{peso(c.totalSpending)}</td>
+>>>>>>> 3078575 (Improve landing page and responsive design)
                       </tr>
                     ))}
                   </tbody>

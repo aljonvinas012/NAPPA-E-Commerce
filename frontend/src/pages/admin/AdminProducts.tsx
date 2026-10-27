@@ -185,7 +185,11 @@ const AdminProducts = () => {
       </div>
 
       <div className="card-surface overflow-x-auto">
+<<<<<<< HEAD
         <table className="w-full text-sm min-w-[720px]">
+=======
+        <table className="w-full text-sm min-w-[720px] stack-table">
+>>>>>>> 3078575 (Improve landing page and responsive design)
           <thead>
             <tr className="text-left text-bark/50 border-b border-tan/30">
               <th className="py-3 px-4">Product</th>
@@ -202,6 +206,7 @@ const AdminProducts = () => {
               <tr><td colSpan={7} className="py-8 text-center text-bark/50 text-sm">No products match your search.</td></tr>
             ) : filteredProducts.map((p) => (
               <tr key={p._id} className="border-b border-tan/15">
+<<<<<<< HEAD
                 <td className="py-3 px-4 flex items-center gap-3">
                   <img src={getImageUrl(p.images[0])} className="w-11 h-11 rounded-soft object-cover" />
                   <span className="font-medium text-ink max-w-[180px] truncate">{p.name}</span>
@@ -214,6 +219,20 @@ const AdminProducts = () => {
                   {p.stock <= 0 && <span className="ml-1.5 text-[10px] font-bold text-red-500">OUT OF STOCK</span>}
                 </td>
                 <td className="py-3 px-4">
+=======
+                <td data-label="Product" className="py-3 px-4 flex items-center gap-3">
+                  <img src={getImageUrl(p.images[0])} className="w-11 h-11 rounded-soft object-cover" />
+                  <span className="font-medium text-ink max-w-[180px] truncate">{p.name}</span>
+                </td>
+                <td data-label="Product Code" className="py-3 px-4 text-bark/60 text-xs font-mono whitespace-nowrap">{p.sku || '—'}</td>
+                <td data-label="Category" className="py-3 px-4 text-bark/70">{p.category}</td>
+                <td data-label="Price" className="py-3 px-4 text-bark/70">₱{p.price.toLocaleString()}</td>
+                <td data-label="Stock" className="py-3 px-4 text-bark/70">
+                  {p.stock}
+                  {p.stock <= 0 && <span className="ml-1.5 text-[10px] font-bold text-red-500">OUT OF STOCK</span>}
+                </td>
+                <td data-label="Status" className="py-3 px-4">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                   <button
                     onClick={() => toggleActive(p)}
                     title={p.stock <= 0 ? 'Restock this product to make it available again.' : ''}
@@ -222,7 +241,11 @@ const AdminProducts = () => {
                     {p.isActive ? 'Available' : 'Unavailable'}
                   </button>
                 </td>
+<<<<<<< HEAD
                 <td className="py-3 px-4 space-x-3 whitespace-nowrap">
+=======
+                <td data-label="Actions" className="py-3 px-4 space-x-3 whitespace-nowrap">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                   <button onClick={() => openEdit(p)} className="text-xs font-semibold text-oliveDark">Edit</button>
                   <button onClick={() => setDeleteId(p._id)} className="text-xs font-semibold text-red-500">Delete</button>
                 </td>
@@ -245,7 +268,11 @@ const AdminProducts = () => {
           )}
           <input className="input-field" placeholder="Product name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
           <textarea className="input-field min-h-[80px]" placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+<<<<<<< HEAD
           <div className="grid grid-cols-2 gap-3">
+=======
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+>>>>>>> 3078575 (Improve landing page and responsive design)
             <input type="number" min="0" className="input-field" placeholder="Price (₱)" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} />
             <input type="number" min="0" className="input-field" placeholder="Stock" value={form.stock} onChange={(e) => setForm({ ...form, stock: e.target.value })} />
           </div>

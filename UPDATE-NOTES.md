@@ -1,3 +1,90 @@
+<<<<<<< HEAD
+=======
+# Mga Update sa Nappa E-Commerce Site (Round 7)
+
+## ⚠️ Gawin bago i-run
+- Sa `frontend/`: **`npm install` ulit** (bagong packages: `@hugeicons/react`, `@hugeicons/core-free-icons`).
+
+## Admin ▸ Manage Users — kasya na sa isang screen
+- Wala nang sideways scroll sa desktop: naka-fixed ang width ng bawat column at isang linya na lang ang bawat user (walang patong-patong).
+- Mahahabang text (email, pangalan, address) ay may "..." — i-hover para makita ang buo.
+- Address: isang linya lang (default o una), may badge na `+N` kung marami; hover para makita lahat. Kumpleto pa rin ang address sa card view (phone/maliit na screen).
+- Naka-text pa rin ang Edit / Reset Password / Disable (hindi icons). Medyo pinalaki ang text (13px).
+
+## Bagong Product Rating (PeekRating)
+- Pinalitan ang lumang ★/☆ buttons sa review modal ng `PeekRating` — sa **Orders** (Rate Product) at **Order Detail**.
+- Pag nag-hover/pindot sa star, tumataas ang mga star at lumalabas ang label: 1 Poor, 2 Fair, 3 Good, 4 Very Good, **5 Excellent**.
+- Hindi na pwedeng i-clear (`allowClear={false}`) dahil required ang rating bago mag-submit.
+- Files: `frontend/src/components/PeekRating.tsx` at `PeekRating.css`. Ang labels ay nasa `RATING_LABELS` sa bawat page.
+
+---
+
+# Mga Update sa Nappa E-Commerce Site (Round 6)
+
+## ⚠️ Gawin bago i-run
+- Sa `frontend/`: **`npm install` ulit** (may bagong packages: `@fortawesome/fontawesome-free`,
+  `@fontsource/manrope`, `@fontsource/fraunces`) — para lumabas ang icons at fonts kahit walang internet.
+
+## Landing page — bagong intro animation
+1. Madilim na screen lang muna (walang video, walang header).
+2. Nahuhulog ang **bilog na logo** (may bounce) kasama ang pangalan at address (*Sumlang, Camalig, Albay*).
+3. Lalawak ang bilog mula sa likod ng logo — **sa loob lang ng lumalawak na bilog lalabas ang background video**.
+4. Pagkatapos lumawak, saka lang **bababa ang header** at lalabas ang headline/buttons.
+- Naka-lock ang scroll habang tumatakbo ang intro. Kapag naka-"reduce motion" ang device, nilalaktawan ang animation.
+- Address sa lahat ng lugar (badge, intro, contact, footer, register) ay **Sumlang, Camalig, Albay** na.
+- Ang file: `frontend/src/components/HeroIntro.tsx` (timing: `holdMs` at `EXPAND_MS`).
+
+## Admin ▸ Manage Users
+- Naka-isang linya na ang bawat user (walang patong-patong), sunod-sunod ang columns: **ID, Customer, Email, Phone Number, Gender, Address (hanggang 3, nakasunod pababa), Date Join, Order, Total Spent, Status, Actions**. (Sa maliit na screen, cards ang labas.)
+- Nandiyan na sa listahan ang **User ID** (katabi ng pangalan, hal. `ID #A1B2C3` — hover para sa buong ID),
+  **phone, gender, at lahat ng saved address** — hindi na kailangang pindutin ang View.
+- **Tinanggal ang "View" button** at ang View modal.
+- Search ngayon ay kaya na ring maghanap gamit ang phone o User ID.
+
+## Admin / Client ▸ Orders na may 2+ items
+- Makikita na ang **lahat ng product pictures** (overlapping thumbnails + `+N`), badge na **"N items"**, at buod ng pangalan
+  ("Bag, Basket +1 more") sa Admin Orders, Admin Dashboard (recent orders), at client Order History.
+- Ang buong item list pa rin ay nasa View Details.
+
+## Responsive (client at admin)
+- Lahat ng table (Orders, Products, Feedback, Cart, Dashboard tables, Order Detail) ay nagiging **cards sa phone/maliit na window**
+  (walang sideways scroll). Customers page may sariling card layout.
+- Ang mga 2-column na form ay nagiging 1 column sa napakaliit na screen; ang chatbot ay hindi na lalabas sa screen kapag maikli ang window.
+
+## Offline icons
+- Tinanggal ang CDN (cdnjs / Google Fonts). Naka-bundle na ang Font Awesome at fonts via npm.
+
+## Docs
+- Binago ang `README.md` at `SETUP-GUIDE.md` (wala nang `mongosh`, may MFA steps, may troubleshooting).
+
+---
+
+# Mga Update sa Nappa E-Commerce Site (Round 5)
+
+## Landing Page — Bagong Hero Design
+- Pinalitan ang buong Hero section ng **video background** (yung video na pinadala mo,
+  nasa `frontend/public/videos/hero.mp4`) — naka-autoplay, naka-mute, at naka-loop.
+- Bagong look na inspired sa mga travel-website na pinakita mo: full-bleed video, malaking
+  bold headline sa ibabaw, dark mocha gradient overlay (para sa readability, hindi pure black —
+  same pa rin sa mocha/cream/vanilla palette), floating badge sa itaas, at isang horizontal
+  na "featured strip" (numbered mini-cards 01–04) sa ibaba ng text — katulad ng ginawa nilang
+  "1st/2nd/3rd" cards sa New Zealand example mo.
+- Ang navigation header ay naging **transparent/floating sa ibabaw ng video** habang nasa
+  itaas ka pa ng page, at awtomatikong nagiging solid/cream background (katulad ng dati) sa
+  sandaling mag-scroll ka pababa — kaya laging nababasa ang text kahit anong laman ng video
+  frame sa likod.
+- May bagong "scroll down" na pababang arrow button sa ibabang-kanang bahagi ng hero.
+
+## Paalala
+- Ang video ay static file lang (`hero.mp4`), so awtomatiko itong ipapasok ng browser mo sa
+  paglo-load ng homepage — walang kailangang i-setup pa dagdag dito.
+- Kung gusto mong palitan sa ibang pagkakataon ang video, palitan mo lang yung file na
+  `frontend/public/videos/hero.mp4` ng bago (keep the same filename, o baguhin din ang
+  `src` sa `Landing.tsx`).
+
+---
+
+>>>>>>> 3078575 (Improve landing page and responsive design)
 # Mga Update sa Nappa E-Commerce Site (Round 4)
 
 Ito yung listahan ng mga pagbabago base sa pinakahuling request mo (yung listahan

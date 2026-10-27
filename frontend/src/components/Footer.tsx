@@ -8,7 +8,11 @@ const Footer = () => (
           <span className="font-display text-paper text-base">Nappa Food & Crafts</span>
         </div>
         <p className="text-sm text-paper/60 max-w-xs">
+<<<<<<< HEAD
           Bringing the heart of Bicolano craftsmanship and pasalubong straight from Camalig, Albay to your home.
+=======
+          Bringing the heart of Bicolano craftsmanship and pasalubong straight from Sumlang, Camalig, Albay to your home.
+>>>>>>> 3078575 (Improve landing page and responsive design)
         </p>
       </div>
       <div>

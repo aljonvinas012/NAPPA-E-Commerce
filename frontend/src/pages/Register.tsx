@@ -67,7 +67,11 @@ const Register = () => {
         </h2>
         <p className="animate-fade-in-up" style={{ animationDelay: '.08s' }}>
           Create your account to shop handwoven abaca crafts, authentic Bicolano pasalubong, and
+<<<<<<< HEAD
           exclusive finds from local artisans in Camalig, Albay.
+=======
+          exclusive finds from local artisans in Sumlang, Camalig, Albay.
+>>>>>>> 3078575 (Improve landing page and responsive design)
         </p>
         <ul className="auth-feature-list">
           <li className="animate-fade-in-left" style={{ animationDelay: '.08s' }}>

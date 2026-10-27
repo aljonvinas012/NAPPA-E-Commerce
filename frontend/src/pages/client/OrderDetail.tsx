@@ -5,9 +5,18 @@ import type { IOrder } from '../../types';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import OrderStatusTracker from '../../components/OrderStatusTracker';
 import Modal from '../../components/Modal';
+<<<<<<< HEAD
 import { useToast } from '../../context/ToastContext';
 import { useResultModal } from '../../context/ResultModalContext';
 
+=======
+import PeekRating from '../../components/PeekRating';
+import { useToast } from '../../context/ToastContext';
+import { useResultModal } from '../../context/ResultModalContext';
+
+const RATING_LABELS = ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
+
+>>>>>>> 3078575 (Improve landing page and responsive design)
 const OrderDetail = () => {
   const { id } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -122,7 +131,11 @@ const OrderDetail = () => {
 
       <h2 className="font-display text-lg text-bark mb-3">Items</h2>
       <div className="card-surface overflow-x-auto mb-6">
+<<<<<<< HEAD
         <table className="w-full text-sm min-w-[520px]">
+=======
+        <table className="w-full text-sm min-w-[520px] stack-table">
+>>>>>>> 3078575 (Improve landing page and responsive design)
           <thead>
             <tr className="text-left text-bark/50 border-b border-tan/30">
               <th className="py-3 px-4">Item</th>
@@ -134,17 +147,28 @@ const OrderDetail = () => {
           <tbody>
             {order.items.map((item, i) => (
               <tr key={i} className="border-b border-tan/15">
+<<<<<<< HEAD
                 <td className="py-3 px-4 flex items-center gap-3">
+=======
+                <td data-label="Item" className="py-3 px-4 flex items-center gap-3">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                   <img src={getImageUrl(item.image)} className="w-12 h-12 rounded-soft object-cover shrink-0" />
                   <div className="min-w-0">
                     <span className="font-medium text-ink max-w-[220px] truncate block">{item.name}</span>
                     {item.sku && <span className="text-[11px] text-bark/50 font-mono">Code: {item.sku}</span>}
                   </div>
                 </td>
+<<<<<<< HEAD
                 <td className="py-3 px-4 text-bark/70">{item.quantity}</td>
                 <td className="py-3 px-4 text-bark/70">₱{item.price.toLocaleString()}</td>
                 {order.status === 'Completed' && (
                   <td className="py-3 px-4 text-right">
+=======
+                <td data-label="Qty" className="py-3 px-4 text-bark/70">{item.quantity}</td>
+                <td data-label="Price" className="py-3 px-4 text-bark/70">₱{item.price.toLocaleString()}</td>
+                {order.status === 'Completed' && (
+                  <td data-label="Actions" className="py-3 px-4 text-right">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                     {item.reviewed ? (
                       <span className="text-xs font-semibold text-oliveDark"><i className="fas fa-check" /> Reviewed</span>
                     ) : (
@@ -201,12 +225,28 @@ const OrderDetail = () => {
               <p className="font-semibold text-sm text-ink">{reviewTarget.name}</p>
             </div>
           )}
+<<<<<<< HEAD
           <div className="flex justify-center gap-1.5">
             {[1, 2, 3, 4, 5].map((n) => (
               <button key={n} onClick={() => setRating(n)} className="text-3xl leading-none text-oliveDark" aria-label={`${n} star${n > 1 ? 's' : ''}`}>
                 {n <= rating ? '★' : '☆'}
               </button>
             ))}
+=======
+          <div className="flex justify-center">
+            <PeekRating
+              value={rating}
+              onChange={setRating}
+              labels={RATING_LABELS}
+              allowClear={false}
+              size={36}
+              activeColor="#A9805F"
+              idleColor="#D8CABB"
+              tipColor="#4A3324"
+              tipTextColor="#FBF6EE"
+              ariaLabel="Rate this product"
+            />
+>>>>>>> 3078575 (Improve landing page and responsive design)
           </div>
           {rating === 0 && <p className="text-xs text-center text-bark/50">Tap a star to rate this product.</p>}
           <textarea

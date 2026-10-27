@@ -4,10 +4,21 @@ import api, { getImageUrl } from '../../services/api';
 import type { IOrder } from '../../types';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import EmptyState from '../../components/EmptyState';
+<<<<<<< HEAD
 import Modal from '../../components/Modal';
 import { useToast } from '../../context/ToastContext';
 import { useResultModal } from '../../context/ResultModalContext';
 
+=======
+import OrderItemsPreview, { itemsSummary, ItemsBadge } from '../../components/OrderItemsPreview';
+import Modal from '../../components/Modal';
+import PeekRating from '../../components/PeekRating';
+import { useToast } from '../../context/ToastContext';
+import { useResultModal } from '../../context/ResultModalContext';
+
+const RATING_LABELS = ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
+
+>>>>>>> 3078575 (Improve landing page and responsive design)
 const STATUS_STYLES: Record<string, string> = {
   Preparing: 'bg-tan/25 text-bark',
   'To Ship': 'bg-olive/20 text-oliveDark',
@@ -121,7 +132,11 @@ const Orders = () => {
           {/* TRACK YOUR ORDER — card-style table, every order still in progress */}
           {activeOrders.length > 0 ? (
             <div className="card-surface overflow-x-auto mb-8">
+<<<<<<< HEAD
               <table className="w-full text-sm min-w-[640px]">
+=======
+              <table className="w-full text-sm min-w-[640px] stack-table">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                 <thead>
                   <tr className="text-left text-bark/50 border-b border-tan/30">
                     <th className="py-3 px-4">Order</th>
@@ -134,6 +149,7 @@ const Orders = () => {
                 <tbody>
                   {activeOrders.map((order) => (
                     <tr key={order._id} className="border-b border-tan/15">
+<<<<<<< HEAD
                       <td className="py-3 px-4 flex items-center gap-3">
                         <img
                           src={getImageUrl(order.items[0]?.image)}
@@ -153,6 +169,23 @@ const Orders = () => {
                       </td>
                       <td className="py-3 px-4 text-bark/50 text-xs">{new Date(order.createdAt).toLocaleDateString()}</td>
                       <td className="py-3 px-4 text-right">
+=======
+                      <td data-label="Order" className="py-3 px-4 flex items-center gap-3">
+                        <OrderItemsPreview items={order.items} />
+                        <div className="min-w-0">
+                          <p className="font-semibold text-ink">{order.orderNumber}<ItemsBadge items={order.items} /></p>
+                          <p className="text-xs text-bark/50 truncate max-w-[200px]">
+                            {itemsSummary(order.items)}
+                          </p>
+                        </div>
+                      </td>
+                      <td data-label="Total" className="py-3 px-4 text-bark/70">₱{order.total.toLocaleString()}</td>
+                      <td data-label="Status" className="py-3 px-4">
+                        <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${STATUS_STYLES[order.status]}`}>{order.status}</span>
+                      </td>
+                      <td data-label="Date" className="py-3 px-4 text-bark/50 text-xs">{new Date(order.createdAt).toLocaleDateString()}</td>
+                      <td data-label="Actions" className="py-3 px-4 text-right">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                         <Link to={`/shop/orders/${order._id}`} className="btn-primary !py-1.5 !px-3 text-xs whitespace-nowrap">
                           View Details
                         </Link>
@@ -192,7 +225,11 @@ const Orders = () => {
                 <EmptyState title="No order history yet" message="Completed and cancelled orders show up here." />
               ) : (
                 <div className="card-surface overflow-x-auto">
+<<<<<<< HEAD
                   <table className="w-full text-sm min-w-[720px]">
+=======
+                  <table className="w-full text-sm min-w-[720px] stack-table">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                     <thead>
                       <tr className="text-left text-bark/50 border-b border-tan/30">
                         <th className="py-3 px-4">Order</th>
@@ -207,6 +244,7 @@ const Orders = () => {
                         const hasUnreviewed = order.status === 'Completed' && order.items.some((i) => !i.reviewed);
                         return (
                           <tr key={order._id} className="border-b border-tan/15 align-top">
+<<<<<<< HEAD
                             <td className="py-3 px-4">
                               <div className="flex items-center gap-3">
                                 <img
@@ -218,6 +256,15 @@ const Orders = () => {
                                   <p className="font-semibold text-ink">{order.orderNumber}</p>
                                   <p className="text-xs text-bark/50 truncate max-w-[200px]">
                                     {order.items.length} item{order.items.length !== 1 ? 's' : ''}
+=======
+                            <td data-label="Order" className="py-3 px-4">
+                              <div className="flex items-center gap-3">
+                                <OrderItemsPreview items={order.items} />
+                                <div className="min-w-0">
+                                  <p className="font-semibold text-ink">{order.orderNumber}<ItemsBadge items={order.items} /></p>
+                                  <p className="text-xs text-bark/50 truncate max-w-[200px]">
+                                    {itemsSummary(order.items)}
+>>>>>>> 3078575 (Improve landing page and responsive design)
                                   </p>
                                   {order.status === 'Cancelled' && order.cancelReason && (
                                     <p className="text-xs text-red-500 truncate max-w-[200px]">Reason: {order.cancelReason}</p>
@@ -225,12 +272,21 @@ const Orders = () => {
                                 </div>
                               </div>
                             </td>
+<<<<<<< HEAD
                             <td className="py-3 px-4 text-bark/70">₱{order.total.toLocaleString()}</td>
                             <td className="py-3 px-4">
                               <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${STATUS_STYLES[order.status]}`}>{order.status}</span>
                             </td>
                             <td className="py-3 px-4 text-bark/50 text-xs">{new Date(order.createdAt).toLocaleDateString()}</td>
                             <td className="py-3 px-4">
+=======
+                            <td data-label="Total" className="py-3 px-4 text-bark/70">₱{order.total.toLocaleString()}</td>
+                            <td data-label="Status" className="py-3 px-4">
+                              <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${STATUS_STYLES[order.status]}`}>{order.status}</span>
+                            </td>
+                            <td data-label="Date" className="py-3 px-4 text-bark/50 text-xs">{new Date(order.createdAt).toLocaleDateString()}</td>
+                            <td data-label="Actions" className="py-3 px-4">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                               <div className="flex flex-wrap justify-end gap-1.5">
                                 <Link to={`/shop/orders/${order._id}`} className="btn-secondary !py-1.5 !px-2.5 text-[11px] whitespace-nowrap">
                                   View Details
@@ -281,12 +337,28 @@ const Orders = () => {
               <img src={getImageUrl(rateOrder.items[rateItemIdx]?.image)} className="w-14 h-14 rounded-soft object-cover" />
               <p className="font-semibold text-sm text-ink">{rateOrder.items[rateItemIdx]?.name}</p>
             </div>
+<<<<<<< HEAD
             <div className="flex justify-center gap-1.5">
               {[1, 2, 3, 4, 5].map((n) => (
                 <button key={n} onClick={() => setRating(n)} className="text-3xl leading-none text-oliveDark" aria-label={`${n} star${n > 1 ? 's' : ''}`}>
                   {n <= rating ? '★' : '☆'}
                 </button>
               ))}
+=======
+            <div className="flex justify-center">
+              <PeekRating
+                value={rating}
+                onChange={setRating}
+                labels={RATING_LABELS}
+                allowClear={false}
+                size={36}
+                activeColor="#A9805F"
+                idleColor="#D8CABB"
+                tipColor="#4A3324"
+                tipTextColor="#FBF6EE"
+                ariaLabel="Rate this product"
+              />
+>>>>>>> 3078575 (Improve landing page and responsive design)
             </div>
             {rating === 0 && <p className="text-xs text-center text-bark/50">Tap a star to rate this product.</p>}
             <textarea

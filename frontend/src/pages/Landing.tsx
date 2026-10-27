@@ -5,6 +5,10 @@ import type { IProduct } from '../types';
 import ProductCard from '../components/ProductCard';
 import Footer from '../components/Footer';
 import Reveal from '../components/Reveal';
+<<<<<<< HEAD
+=======
+import HeroIntro from '../components/HeroIntro';
+>>>>>>> 3078575 (Improve landing page and responsive design)
 import { useAuth } from '../context/AuthContext';
 
 const navLinks = [
@@ -21,11 +25,34 @@ const Landing = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
   const [contactStatus, setContactStatus] = useState<'idle' | 'success' | 'error'>('idle');
+<<<<<<< HEAD
+=======
+  const [scrolled, setScrolled] = useState(false);
+  const [introDone, setIntroDone] = useState(false);
+>>>>>>> 3078575 (Improve landing page and responsive design)
 
   useEffect(() => {
     api.get('/products').then(({ data }) => setProducts(data.slice(0, 8))).catch(() => {});
   }, []);
 
+<<<<<<< HEAD
+=======
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Keep the page still while the logo drops and the circle opens
+  useEffect(() => {
+    if (introDone) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, [introDone]);
+
+>>>>>>> 3078575 (Improve landing page and responsive design)
   const scrollTo = (id: string) => {
     setMenuOpen(false);
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -45,18 +72,41 @@ const Landing = () => {
   return (
     <div className="bg-paper">
       {/* NAV */}
+<<<<<<< HEAD
       <header className="sticky top-0 z-50 bg-paper/95 backdrop-blur border-b border-tan/30">
         <div className="container-nappa flex items-center justify-between py-3">
           <button onClick={() => scrollTo('home')} className="flex items-center gap-2">
             <img src="/images/logo.png" alt="Nappa logo" className="w-10 h-10 object-contain" />
             <span className="hidden sm:block font-display text-sm text-bark leading-tight text-left">
               Nappa Food & Crafts<br /><span className="text-[11px] font-body text-bark/60">Pasalubong Center</span>
+=======
+      <header
+        aria-hidden={!introDone}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-out ${
+          introDone ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'
+        } ${scrolled ? 'bg-paper/95 backdrop-blur shadow-soft' : 'bg-gradient-to-b from-mist/70 to-transparent'}`}
+      >
+        <div className="container-nappa flex items-center justify-between py-3">
+          <button onClick={() => scrollTo('home')} className="flex items-center gap-2">
+            <img src="/images/logo.png" alt="Nappa logo" className="w-10 h-10 object-contain rounded-full bg-paper p-0.5" />
+            <span className={`hidden sm:block font-display text-sm leading-tight text-left transition-colors ${scrolled ? 'text-bark' : 'text-paper'}`}>
+              Nappa Food & Crafts<br />
+              <span className={`text-[11px] font-body font-normal ${scrolled ? 'text-bark/60' : 'text-paper/70'}`}>Pasalubong Center</span>
+>>>>>>> 3078575 (Improve landing page and responsive design)
             </span>
           </button>
 
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((l) => (
+<<<<<<< HEAD
               <button key={l.id} onClick={() => scrollTo(l.id)} className="text-sm font-semibold text-ink hover:text-oliveDark transition-colors">
+=======
+              <button
+                key={l.id}
+                onClick={() => scrollTo(l.id)}
+                className={`text-sm font-semibold transition-colors ${scrolled ? 'text-ink hover:text-oliveDark' : 'text-paper/90 hover:text-paper'}`}
+              >
+>>>>>>> 3078575 (Improve landing page and responsive design)
                 {l.label}
               </button>
             ))}
@@ -67,13 +117,21 @@ const Landing = () => {
               <button onClick={() => navigate('/shop')} className="btn-primary !py-2">Go to Shop</button>
             ) : (
               <>
+<<<<<<< HEAD
                 <Link to="/login" className="btn-secondary !py-2">Login</Link>
+=======
+                <Link to="/login" className={scrolled ? 'btn-secondary !py-2' : 'btn-secondary !py-2 !border-paper/50 !text-paper hover:!bg-paper/10 hover:!border-paper'}>Login</Link>
+>>>>>>> 3078575 (Improve landing page and responsive design)
                 <Link to="/register" className="btn-primary !py-2">Sign Up</Link>
               </>
             )}
           </div>
 
+<<<<<<< HEAD
           <button className="md:hidden text-2xl text-bark" onClick={() => setMenuOpen((v) => !v)} aria-label="Menu">
+=======
+          <button className={`md:hidden text-2xl ${scrolled ? 'text-bark' : 'text-paper'}`} onClick={() => setMenuOpen((v) => !v)} aria-label="Menu">
+>>>>>>> 3078575 (Improve landing page and responsive design)
             {menuOpen ? <i className="fas fa-xmark" /> : <i className="fas fa-bars" />}
           </button>
         </div>
@@ -101,6 +159,7 @@ const Landing = () => {
         )}
       </header>
 
+<<<<<<< HEAD
       {/* HERO */}
       <section id="home" className="container-nappa py-14 md:py-24 grid md:grid-cols-2 gap-10 items-center">
         <div className="animate-fade-in-up">
@@ -129,6 +188,47 @@ const Landing = () => {
 
       {/* ABOUT */}
       <section id="about" className="bg-cream/50 py-16 md:py-24 woven-pattern overflow-hidden">
+=======
+      {/* HERO — full-bleed video background */}
+      <section id="home" className="relative h-screen min-h-screen w-full overflow-hidden flex items-end">
+        <HeroIntro
+          videoSrc="/videos/hero.mp4"
+          poster="/images/hero-poster.jpg"
+          logoSrc="/images/logo.png"
+          tagline="Pasalubong Center · Sumlang, Camalig, Albay"
+          onDone={() => setIntroDone(true)}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-mist via-mist/45 to-mist/15 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-mist/60 via-mist/5 to-transparent pointer-events-none" />
+
+        {introDone && (
+          <div className="container-nappa relative z-10 pb-16 md:pb-20 w-full animate-fade-in-up">
+            <span className="inline-flex items-center gap-2 text-xs font-bold tracking-wide text-paper bg-paper/15 backdrop-blur border border-paper/25 px-3.5 py-1.5 rounded-full mb-5">
+              <i className="fas fa-location-dot" /> Straight from Sumlang, Camalig, Albay
+            </span>
+            <h1 className="font-display text-4xl sm:text-6xl leading-[1.05] text-paper mb-5 max-w-2xl">
+              Discover the heart of Filipino craftsmanship
+            </h1>
+            <p className="text-paper/80 text-base sm:text-lg leading-relaxed mb-8 max-w-lg">
+              From handwoven abaca bags to authentic Bicolano pasalubong, every product here carries
+              the hands and heritage of local artisans supported by the OTOP Hub of Region V.
+            </p>
+            <div className="flex flex-wrap gap-3 mb-12">
+              <button onClick={() => scrollTo('products')} className="btn-primary">Shop the Collection</button>
+              <button
+                onClick={() => scrollTo('about')}
+                className="btn-secondary !border-paper/50 !text-paper hover:!bg-paper/10 hover:!border-paper"
+              >
+                Our Story
+              </button>
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* ABOUT */}
+      <section id="about" className="bg-cream/50 min-h-screen woven-pattern overflow-hidden flex items-center">
+>>>>>>> 3078575 (Improve landing page and responsive design)
         <div className="container-nappa grid md:grid-cols-2 gap-10 items-center">
           <Reveal variant="left" className="order-2 md:order-1">
             <img src="/images/products/furniture-3.jpg" alt="Filipino craftsmanship" className="rounded-card shadow-card w-full h-72 object-cover" />
@@ -180,7 +280,11 @@ const Landing = () => {
         <div className="container-nappa relative grid lg:grid-cols-5 gap-10">
           <Reveal variant="left" className="lg:col-span-2 flex flex-col justify-center">
             <span className="inline-flex items-center gap-2 text-xs font-bold tracking-wide text-cream bg-paper/10 border border-paper/20 px-3 py-1.5 rounded-full mb-5 w-fit">
+<<<<<<< HEAD
               <i className="fas fa-location-dot" /> Camalig, Albay · Region V
+=======
+              <i className="fas fa-location-dot" /> Sumlang, Camalig, Albay · Region V
+>>>>>>> 3078575 (Improve landing page and responsive design)
             </span>
             <h2 className="font-display text-3xl md:text-4xl mb-4 leading-tight">Let's talk pasalubong.</h2>
             <p className="text-paper/70 mb-8 max-w-sm leading-relaxed">

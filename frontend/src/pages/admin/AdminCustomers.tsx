@@ -5,6 +5,13 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import Modal from '../../components/Modal';
 import { useResultModal } from '../../context/ResultModalContext';
 
+<<<<<<< HEAD
+=======
+// Short, readable user ID shown in the list (full Mongo ID is in the tooltip)
+const shortId = (id: string) => id.slice(-6).toUpperCase();
+const formatAddress = (a: any) => [a.street, a.barangay, a.city, a.province].filter(Boolean).join(', ');
+
+>>>>>>> 3078575 (Improve landing page and responsive design)
 const AdminCustomers = () => {
   const { showResult } = useResultModal();
   const [customers, setCustomers] = useState<ICustomer[]>([]);
@@ -15,7 +22,10 @@ const AdminCustomers = () => {
   const [editing, setEditing] = useState<ICustomer | null>(null);
   const [editForm, setEditForm] = useState({ firstName: '', lastName: '', email: '', phone: '', gender: '' });
   const [savingEdit, setSavingEdit] = useState(false);
+<<<<<<< HEAD
   const [viewing, setViewing] = useState<ICustomer | null>(null);
+=======
+>>>>>>> 3078575 (Improve landing page and responsive design)
 
   const [resetting, setResetting] = useState<ICustomer | null>(null);
   const [newPassword, setNewPassword] = useState('');
@@ -92,11 +102,64 @@ const AdminCustomers = () => {
 
   const filtered = customers.filter((c) => {
     const q = search.trim().toLowerCase();
+<<<<<<< HEAD
     const matchesSearch = !q || `${c.firstName} ${c.lastName}`.toLowerCase().includes(q) || c.email.toLowerCase().includes(q);
+=======
+    const matchesSearch =
+      !q ||
+      `${c.firstName} ${c.lastName}`.toLowerCase().includes(q) ||
+      c.email.toLowerCase().includes(q) ||
+      (c.phone || '').includes(q) ||
+      shortId(c._id).toLowerCase().includes(q.replace('#', ''));
+>>>>>>> 3078575 (Improve landing page and responsive design)
     const matchesStatus = statusFilter === 'All' || c.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
+<<<<<<< HEAD
+=======
+  const StatusBadge = ({ status }: { status: string }) => (
+    <span className={`inline-block shrink-0 text-xs font-bold px-2.5 py-1 rounded-full ${status === 'active' ? 'bg-oliveDark/15 text-oliveDark' : 'bg-red-50 text-red-500'}`}>
+      {status === 'active' ? 'Active' : 'Disabled'}
+    </span>
+  );
+
+  // Phone, gender and every saved address — always visible, no "View" click needed
+  const UserDetails = ({ c }: { c: ICustomer }) => (
+    <div className="space-y-1.5">
+      <p><i className="fas fa-phone w-4 text-oliveDark" /> {c.phone || <span className="text-bark/40">No phone</span>}</p>
+      <p><i className="fas fa-venus-mars w-4 text-oliveDark" /> {c.gender || <span className="text-bark/40">Not specified</span>}</p>
+      {c.addresses && c.addresses.length > 0 ? (
+        c.addresses.map((a: any, i: number) => (
+          <p key={a._id || i} className="leading-snug">
+            <i className="fas fa-location-dot w-4 text-oliveDark" /> {formatAddress(a)}
+            {a.isDefault && <span className="ml-1 text-[10px] font-bold text-oliveDark">(Default)</span>}
+          </p>
+        ))
+      ) : (
+        <p className="text-bark/40"><i className="fas fa-location-dot w-4 text-oliveDark" /> No saved address</p>
+      )}
+    </div>
+  );
+
+  const renderActions = (c: ICustomer, pill = false) => {
+    const base = pill ? 'px-3 py-1.5 rounded-full border border-tan/50' : '';
+    return (
+      <>
+        <button onClick={() => openEdit(c)} className={`text-oliveDark ${base}`}>Edit</button>
+        <button onClick={() => setResetting(c)} className={`text-bark/60 ${base}`}>Reset Password</button>
+        <button
+          disabled={statusBusyId === c._id}
+          onClick={() => toggleStatus(c)}
+          className={`${c.status === 'active' ? 'text-red-500' : 'text-oliveDark'} ${base}`}
+        >
+          {c.status === 'active' ? 'Disable' : 'Enable'}
+        </button>
+      </>
+    );
+  };
+
+>>>>>>> 3078575 (Improve landing page and responsive design)
   if (loading) return <LoadingSpinner label="Loading customers..." />;
 
   return (
@@ -106,7 +169,11 @@ const AdminCustomers = () => {
         <div className="flex flex-wrap gap-2 items-center">
           <div className="input-icon-wrap w-full sm:w-64">
             <i className="fas fa-magnifying-glass" />
+<<<<<<< HEAD
             <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search name or email..." className="input-field" />
+=======
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search name, email, phone or ID..." className="input-field" />
+>>>>>>> 3078575 (Improve landing page and responsive design)
           </div>
           {/* Oval status filter buttons instead of a dropdown */}
           <div className="flex gap-2">
@@ -129,6 +196,7 @@ const AdminCustomers = () => {
         </div>
       </div>
 
+<<<<<<< HEAD
       <div className="card-surface overflow-x-auto">
         <table className="w-full text-sm min-w-[760px]">
           <thead>
@@ -180,11 +248,121 @@ const AdminCustomers = () => {
           </tbody>
         </table>
       </div>
+=======
+      {filtered.length === 0 ? (
+        <div className="card-surface py-10 text-center text-bark/50 text-sm">No users match your search.</div>
+      ) : (
+        <>
+          {/* Desktop: everything fits in one line per user — no sideways scrolling, nothing stacked.
+              Long text is truncated with "..." (hover to see the full value). */}
+          <div className="hidden xl:block card-surface !p-2">
+            <table className="w-full table-fixed text-[13px]">
+              <thead>
+                <tr className="text-left text-bark/50 border-b border-tan/30 whitespace-nowrap">
+                  <th className="py-3 px-1.5 text-xs w-[7%]">ID</th>
+                  <th className="py-3 px-1.5 text-xs w-[9%]">Customer</th>
+                  <th className="py-3 px-1.5 text-xs w-[12%]">Email</th>
+                  <th className="py-3 px-1.5 text-xs w-[10%]">Phone</th>
+                  <th className="py-3 px-1.5 text-xs w-[6%]">Gender</th>
+                  <th className="py-3 px-1.5 text-xs w-[9%]">Address</th>
+                  <th className="py-3 px-1.5 text-xs w-[8%]">Joined</th>
+                  <th className="py-3 px-1.5 text-xs w-[6%]">Orders</th>
+                  <th className="py-3 px-1.5 text-xs w-[7%]">Spent</th>
+                  <th className="py-3 px-1.5 text-xs w-[6%]">Status</th>
+                  <th className="py-3 px-1.5 text-xs w-[20%] text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((c) => {
+                  const addrs: any[] = c.addresses || [];
+                  const main = addrs.find((a) => a.isDefault) || addrs[0];
+                  const allAddrs = addrs.map(formatAddress).join('\n');
+                  return (
+                    <tr key={c._id} className="border-b border-tan/15 text-bark/70 align-middle">
+                      <td className="py-3 px-1.5">
+                        <span title={c._id} className="font-mono text-[11px] font-semibold text-oliveDark bg-cream/70 px-1.5 py-0.5 rounded">
+                          #{shortId(c._id)}
+                        </span>
+                      </td>
+                      <td className="py-3 px-1.5 font-medium text-ink truncate" title={`${c.firstName} ${c.lastName}`}>
+                        {c.firstName} {c.lastName}
+                      </td>
+                      <td className="py-3 px-1.5 truncate" title={c.email}>{c.email}</td>
+                      <td className="py-3 px-1.5 truncate" title={c.phone || ''}>{c.phone || '—'}</td>
+                      <td className="py-3 px-1.5 truncate" title={c.gender || ''}>{c.gender || '—'}</td>
+                      <td className="py-3 px-1.5" title={allAddrs}>
+                        {main ? (
+                          <div className="flex items-center gap-1 min-w-0">
+                            <i className="fas fa-location-dot text-oliveDark shrink-0" />
+                            <span className="truncate">{formatAddress(main)}</span>
+                            {addrs.length > 1 && (
+                              <span className="shrink-0 text-[10px] font-bold text-oliveDark bg-cream/70 px-1.5 py-0.5 rounded-full">+{addrs.length - 1}</span>
+                            )}
+                          </div>
+                        ) : (
+                          <span className="text-bark/40">No saved address</span>
+                        )}
+                      </td>
+                      <td className="py-3 px-1.5 truncate">{new Date(c.createdAt).toLocaleDateString()}</td>
+                      <td className="py-3 px-1.5">{c.orderCount}</td>
+                      <td className="py-3 px-1.5 truncate">₱{(c.totalSpending || 0).toLocaleString()}</td>
+                      <td className="py-3 px-1.5"><StatusBadge status={c.status} /></td>
+                      <td className="py-3 px-1.5">
+                        <div className="flex justify-end gap-2.5 text-[13px] font-semibold whitespace-nowrap">{renderActions(c)}</div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile / small tablet: one card per user so nothing is cut off */}
+          <div className="xl:hidden space-y-3">
+            {filtered.map((c) => (
+              <div key={c._id} className="card-surface p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="font-semibold text-ink truncate">{c.firstName} {c.lastName}</p>
+                    <span title={c._id} className="inline-block font-mono text-[11px] font-semibold text-oliveDark bg-cream/70 px-1.5 py-0.5 rounded mt-0.5">
+                      ID #{shortId(c._id)}
+                    </span>
+                  </div>
+                  <StatusBadge status={c.status} />
+                </div>
+                <p className="text-xs text-bark/60 mt-2 break-all"><i className="fas fa-envelope w-4" /> {c.email}</p>
+                <div className="grid grid-cols-2 gap-2 my-3 text-center">
+                  <div className="bg-cream/40 rounded-soft py-2">
+                    <p className="text-[11px] text-bark/50">Orders</p>
+                    <p className="font-semibold text-ink text-sm">{c.orderCount}</p>
+                  </div>
+                  <div className="bg-cream/40 rounded-soft py-2">
+                    <p className="text-[11px] text-bark/50">Spent</p>
+                    <p className="font-semibold text-ink text-sm">₱{(c.totalSpending || 0).toLocaleString()}</p>
+                  </div>
+                </div>
+                <div className="text-xs text-bark/70 border-t border-tan/20 pt-3">
+                  <UserDetails c={c} />
+                </div>
+                <p className="text-[11px] text-bark/40 mt-2">Joined {new Date(c.createdAt).toLocaleDateString()}</p>
+                <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t border-tan/20 text-xs font-semibold">
+                  {renderActions(c, true)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+>>>>>>> 3078575 (Improve landing page and responsive design)
 
       {/* Edit user modal */}
       <Modal open={!!editing} onClose={() => setEditing(null)} title="Edit User Details">
         <div className="space-y-4">
+<<<<<<< HEAD
           <div className="grid grid-cols-2 gap-3">
+=======
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+>>>>>>> 3078575 (Improve landing page and responsive design)
             <div>
               <label className="field-label">First Name</label>
               <input className="input-field" value={editForm.firstName} onChange={(e) => setEditForm({ ...editForm, firstName: e.target.value })} />
@@ -198,7 +376,11 @@ const AdminCustomers = () => {
             <label className="field-label">Email</label>
             <input className="input-field" value={editForm.email} onChange={(e) => setEditForm({ ...editForm, email: e.target.value })} />
           </div>
+<<<<<<< HEAD
           <div className="grid grid-cols-2 gap-3">
+=======
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+>>>>>>> 3078575 (Improve landing page and responsive design)
             <div>
               <label className="field-label">Phone Number</label>
               <input className="input-field" value={editForm.phone} onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })} />
@@ -239,6 +421,7 @@ const AdminCustomers = () => {
         </div>
       </Modal>
 
+<<<<<<< HEAD
       {/* View full user details modal */}
       <Modal open={!!viewing} onClose={() => setViewing(null)} title="User Details" maxWidth="max-w-lg">
         {viewing && (
@@ -303,6 +486,8 @@ const AdminCustomers = () => {
           </div>
         )}
       </Modal>
+=======
+>>>>>>> 3078575 (Improve landing page and responsive design)
     </div>
   );
 };

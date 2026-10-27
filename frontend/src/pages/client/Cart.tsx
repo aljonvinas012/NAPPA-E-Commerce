@@ -66,7 +66,11 @@ const Cart = () => {
               {groups.length > 1 ? `Order ${gi + 1} — ${group.category}` : group.category}
             </p>
             <div className="overflow-x-auto">
+<<<<<<< HEAD
               <table className="w-full text-sm min-w-[640px]">
+=======
+              <table className="w-full text-sm min-w-[640px] stack-table">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                 <thead>
                   <tr className="text-left text-bark/50 border-b border-tan/30">
                     <th className="py-2.5 px-4">Product</th>
@@ -79,7 +83,11 @@ const Cart = () => {
                 <tbody>
                   {group.items.map((item) => (
                     <tr key={item.product._id} className="border-b border-tan/15 last:border-0">
+<<<<<<< HEAD
                       <td className="py-3 px-4 flex items-center gap-3">
+=======
+                      <td data-label="Product" className="py-3 px-4 flex items-center gap-3">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                         <img
                           src={getImageUrl(item.product.images[0])}
                           className="w-14 h-14 rounded-soft object-cover shrink-0 cursor-pointer"
@@ -90,8 +98,13 @@ const Cart = () => {
                           <p className="text-xs text-bark/50">{item.product.category}</p>
                         </div>
                       </td>
+<<<<<<< HEAD
                       <td className="py-3 px-4 text-bark/70">₱{item.product.price.toLocaleString()}</td>
                       <td className="py-3 px-4">
+=======
+                      <td data-label="Price" className="py-3 px-4 text-bark/70">₱{item.product.price.toLocaleString()}</td>
+                      <td data-label="Quantity" className="py-3 px-4">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                         <div className="flex items-center border border-tan/50 rounded-full overflow-hidden w-fit">
                           <button
                             onClick={() => updateQuantity(item.product._id, Math.max(1, item.quantity - 1))}
@@ -108,10 +121,17 @@ const Cart = () => {
                           </button>
                         </div>
                       </td>
+<<<<<<< HEAD
                       <td className="py-3 px-4 font-display text-bark whitespace-nowrap">
                         ₱{(item.product.price * item.quantity).toLocaleString()}
                       </td>
                       <td className="py-3 px-4 text-right">
+=======
+                      <td data-label="Subtotal" className="py-3 px-4 font-display text-bark whitespace-nowrap">
+                        ₱{(item.product.price * item.quantity).toLocaleString()}
+                      </td>
+                      <td data-label="" className="py-3 px-4 text-right">
+>>>>>>> 3078575 (Improve landing page and responsive design)
                         <button onClick={() => removeItem(item.product._id)} className="text-red-400 hover:text-red-500 w-8 h-8 rounded-full hover:bg-red-50 inline-flex items-center justify-center">
                           <i className="fas fa-trash-can" />
                         </button>

@@ -18,6 +18,11 @@ export default {
         ink: '#3A2A1D',
         // Vanilla cream — page background
         paper: '#FFF8EA',
+<<<<<<< HEAD
+=======
+        // Deep misty forest-teal — hero/nav overlay, tuned to the lake & volcano background
+        mist: '#2E3A33',
+>>>>>>> 3078575 (Improve landing page and responsive design)
       },
       fontFamily: {
         display: ['"Fraunces"', 'serif'],
