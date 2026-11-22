@@ -12,6 +12,9 @@ export interface IAddress {
   postalCode: string;
   instructions?: string;
   isDefault: boolean;
+  // Set when the customer picks the address with "Use my current location".
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface IUser extends Document {
@@ -45,6 +48,8 @@ const AddressSchema = new Schema<IAddress>({
   postalCode: { type: String, required: true },
   instructions: { type: String, default: '' },
   isDefault: { type: Boolean, default: false },
+  latitude: { type: Number },
+  longitude: { type: Number },
 });
 
 const UserSchema = new Schema<IUser>(

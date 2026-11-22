@@ -59,26 +59,26 @@ const ProductCard = ({ product }: { product: IProduct }) => {
           </span>
         )}
       </div>
-      <div className="p-3.5 flex flex-col gap-1.5 flex-1">
+      <div className="p-3 sm:p-3.5 flex flex-col gap-1.5 flex-1">
         <span className="text-[11px] text-oliveDark font-semibold">{product.category}</span>
         <h3 className="font-semibold text-ink text-sm leading-snug line-clamp-2">{product.name}</h3>
         <div className="flex items-center gap-1.5">
           <RatingStars rating={product.rating} size={12} />
           <span className="text-xs text-bark/50">({product.reviewCount})</span>
         </div>
-        <p className="font-display text-lg text-bark mt-auto">₱{product.price.toLocaleString()}</p>
-        <div className="flex gap-2 mt-1">
+        <p className="font-display text-base sm:text-lg text-bark mt-auto">₱{product.price.toLocaleString()}</p>
+        <div className="flex gap-1.5 sm:gap-2 mt-1">
           <button
             onClick={handleAddToCart}
             disabled={outOfStock}
-            className="flex-1 btn-secondary !py-2 !px-2 text-xs"
+            className="flex-1 btn-secondary btn-compact btn-tight !py-2 !px-2 text-xs"
           >
             Add to Cart
           </button>
           <button
             onClick={handleBuyNow}
             disabled={outOfStock}
-            className="flex-1 btn-primary !py-2 !px-2 text-xs"
+            className="flex-1 btn-primary btn-compact btn-tight !py-2 !px-2 text-xs"
           >
             Buy Now
           </button>

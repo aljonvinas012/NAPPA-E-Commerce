@@ -62,7 +62,7 @@ const Products = () => {
       ) : products.length === 0 ? (
         <EmptyState title="No products found" message="Try a different search term or category." />
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5">
           {products.map((p) => <ProductCard key={p._id} product={p} />)}
         </div>
       )}

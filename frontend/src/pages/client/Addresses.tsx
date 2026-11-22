@@ -6,11 +6,39 @@ import { useResultModal } from '../../context/ResultModalContext';
 import api from '../../services/api';
 import Modal from '../../components/Modal';
 import EmptyState from '../../components/EmptyState';
+import LocationPicker from '../../components/LocationPicker';
 
 const regions = ['Metro Manila', 'North Luzon', 'South Luzon', 'Visayas', 'Mindanao'];
 
+// Local government region codes from OpenStreetMap (ISO 3166-2:PH), grouped
+// into the five choices the address form offers.
+const REGION_BY_ISO: Record<string, string> = {
+  'PH-00': 'Metro Manila',
+  'PH-01': 'North Luzon', 'PH-02': 'North Luzon', 'PH-03': 'North Luzon', 'PH-15': 'North Luzon',
+  'PH-05': 'South Luzon', 'PH-40': 'South Luzon', 'PH-41': 'South Luzon',
+  'PH-06': 'Visayas', 'PH-07': 'Visayas', 'PH-08': 'Visayas', 'PH-18': 'Visayas',
+  'PH-09': 'Mindanao', 'PH-10': 'Mindanao', 'PH-11': 'Mindanao', 'PH-12': 'Mindanao',
+  'PH-13': 'Mindanao', 'PH-14': 'Mindanao',
+};
+
+// Fallback for points where OpenStreetMap only gives names, not ISO codes.
+const regionFromAddress = (a: any): string => {
+  const iso = a['ISO3166-2-lvl3'] || a['ISO3166-2-lvl4'];
+  if (iso && REGION_BY_ISO[iso]) return REGION_BY_ISO[iso];
+
+  const text = `${a.region || ''} ${a.state || ''} ${a.province || ''}`.toLowerCase();
+  if (/metro manila|national capital|\bncr\b/.test(text)) return 'Metro Manila';
+  if (/ilocos|cagayan valley|central luzon|cordillera|batanes|isabela|quirino|nueva vizcaya|abra|apayao|benguet|ifugao|kalinga|mountain province|aurora|bataan|bulacan|nueva ecija|pampanga|tarlac|zambales/.test(text)) return 'North Luzon';
+  if (/calabarzon|mimaropa|bicol|quezon|rizal|laguna|batangas|cavite|romblon|marinduque|palawan|albay|camarines|sorsogon|masbate/.test(text)) return 'South Luzon';
+  if (/visayas|iloilo|antique|capiz|guimaras|negros|bohol|cebu|siquijor|leyte|samar|biliran/.test(text)) return 'Visayas';
+  if (/mindanao|zamboanga|misamis|davao|soccsksargen|cotabato|sarangani|sultan kudarat|agusan|surigao|dinagat|bukidnon|lanao|bangsamoro|barmm|basilan|sulu|tawi/.test(text)) return 'Mindanao';
+  return '';
+};
+
 const emptyForm = {
   fullName: '', phone: '', region: '', province: '', city: '', barangay: '', street: '', postalCode: '', instructions: '', isDefault: false,
+  latitude: undefined as number | undefined,
+  longitude: undefined as number | undefined,
 };
 
 const Addresses = () => {
@@ -22,6 +50,7 @@ const Addresses = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
+  const [locating, setLocating] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const addresses = user?.addresses || [];
@@ -31,7 +60,11 @@ const Addresses = () => {
       showToast('You can only save up to 3 addresses.', 'error');
       return;
     }
-    setForm(emptyForm);
+    setForm({
+      ...emptyForm,
+      fullName: [user?.firstName, user?.lastName].filter(Boolean).join(' '),
+      phone: user?.phone || '',
+    });
     setEditingId(null);
     setModalOpen(true);
   };
@@ -39,12 +72,121 @@ const Addresses = () => {
   const openEdit = (id: string) => {
     const addr = addresses.find((a) => a._id === id);
     if (!addr) return;
-    setForm({ ...addr, instructions: addr.instructions || '' });
+    setForm({
+      ...emptyForm,
+      ...addr,
+      instructions: addr.instructions || '',
+      latitude: addr.latitude,
+      longitude: addr.longitude,
+    });
     setEditingId(id);
     setModalOpen(true);
   };
 
   const update = (key: string, value: any) => setForm({ ...form, [key]: value });
+
+  // Reverse geocode so a map pin can fill the fields the customer still gets
+  // to edit. Photon first (one request; it knows PH streets/towns well), then
+  // Nominatim only for whatever Photon left blank.
+  const applyLocation = async (latitude: number, longitude: number) => {
+    let street = '';
+    let houseNumber = '';
+    let barangay = '';
+    let city = '';
+    let province = '';
+    let postalCode = '';
+
+    try {
+      const res = await fetch(
+        `https://photon.komoot.io/reverse?lat=${latitude}&lon=${longitude}&lang=en`
+      );
+      if (res.ok) {
+        const props = (await res.json())?.features?.[0]?.properties || {};
+        street = props.street || '';
+        houseNumber = props.housenumber || '';
+        const locality = String(props.locality || '');
+        const isPurok = /^(zone|purok|sitio)\b/i.test(locality);
+        barangay = (isPurok ? props.district || locality : locality || props.district) || '';
+        city = props.city || props.county || '';
+        province = props.state || '';
+        postalCode = props.postcode || '';
+      }
+    } catch {
+      // Fall through to Nominatim.
+    }
+
+    if (!street || !city || !barangay) {
+      try {
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&accept-language=en&lat=${latitude}&lon=${longitude}`
+        );
+        if (res.ok) {
+          const a = (await res.json()).address || {};
+          street = street || a.road || a.pedestrian || '';
+          houseNumber = houseNumber || a.house_number || '';
+          barangay = barangay || a.neighbourhood || a.quarter || a.suburb || a.village || a.hamlet || a.city_district || '';
+          city = city || a.city || a.town || a.municipality || a.county || '';
+          province = province || a.state || a.province || a.state_district || a.region || '';
+          postalCode = postalCode || a.postcode || '';
+        }
+      } catch {
+        // Keep what Photon already gave us.
+      }
+    }
+
+    const filled = street || city || barangay || postalCode;
+    setForm((prev) => ({
+      ...prev,
+      latitude,
+      longitude,
+      street: [houseNumber, street].filter(Boolean).join(' ') || prev.street,
+      barangay: barangay || prev.barangay,
+      city: city || prev.city,
+      province: province || prev.province,
+      region: regionFromAddress({ state: province, province }) || prev.region,
+      postalCode: postalCode || prev.postalCode,
+    }));
+    showToast(
+      filled
+        ? 'Address filled from the pin — please check it before saving.'
+        : 'Pin saved, but no address was found. Please type it.',
+      filled ? 'success' : 'error'
+    );
+  };
+
+  // Geolocation Web API: start the pin at the phone's GPS position.
+  const useMyLocation = () => {
+    if (!('geolocation' in navigator)) {
+      showToast('This browser cannot get your location. Tap the map instead.', 'error');
+      return;
+    }
+    // Browsers block location on plain http:// (except localhost).
+    if (!window.isSecureContext) {
+      showToast('Location needs HTTPS (or localhost). You can still tap the map to pin your address.', 'error');
+      return;
+    }
+
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          await applyLocation(position.coords.latitude, position.coords.longitude);
+        } finally {
+          setLocating(false);
+        }
+      },
+      (error) => {
+        setLocating(false);
+        const messages: Record<number, string> = {
+          1: 'Location permission denied. You can still tap the map to pin your address.',
+          2: 'Your location is unavailable right now. Tap the map instead.',
+          3: 'Location lookup timed out. Tap the map instead.',
+        };
+        showToast(messages[error.code] || 'Could not get your location.', 'error');
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -131,6 +273,16 @@ const Addresses = () => {
                   <p className="text-sm text-bark/60">{a.phone}</p>
                   <p className="text-sm text-bark/60">{a.street}, {a.barangay}, {a.city}, {a.province}, {a.region} {a.postalCode}</p>
                   {a.instructions && <p className="text-xs text-bark/40 mt-1">Note: {a.instructions}</p>}
+                  {a.latitude != null && a.longitude != null && (
+                    <a
+                      href={`https://www.google.com/maps?q=${a.latitude},${a.longitude}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-xs font-semibold text-oliveDark mt-1 inline-flex items-center gap-1"
+                    >
+                      <i className="fas fa-location-dot" /> View pinned location
+                    </a>
+                  )}
                 </div>
               </div>
               <div className="flex gap-4 mt-3 pt-3 border-t border-tan/20 text-xs font-semibold">
@@ -143,26 +295,27 @@ const Addresses = () => {
         </div>
       )}
 
-      <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editingId ? 'Edit Address' : 'Add Address'}>
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editingId ? 'Edit Address' : 'Add Address'} maxWidth="max-w-lg">
         <form onSubmit={handleSubmit} className="space-y-3">
+          <LocationPicker
+            latitude={form.latitude}
+            longitude={form.longitude}
+            onPick={(lat, lng) => { void applyLocation(lat, lng); }}
+          />
+          <button type="button" onClick={useMyLocation} disabled={locating} className="btn-secondary w-full text-sm">
+            <i className="fas fa-location-crosshairs mr-2" />
+            {locating ? 'Getting your location...' : 'Use my current location'}
+          </button>
           <input className="input-field" placeholder="Full Name" value={form.fullName} onChange={(e) => update('fullName', e.target.value)} />
           <input className="input-field" placeholder="Phone Number" value={form.phone} onChange={(e) => update('phone', e.target.value)} />
-<<<<<<< HEAD
-          <div className="grid grid-cols-2 gap-3">
-=======
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
->>>>>>> 3078575 (Improve landing page and responsive design)
             <select className="input-field !rounded-full !w-auto" value={form.region} onChange={(e) => update('region', e.target.value)}>
               <option value="" disabled>Select Region</option>
               {regions.map((r) => <option key={r} value={r}>{r}</option>)}
             </select>
             <input className="input-field" placeholder="Province" value={form.province} onChange={(e) => update('province', e.target.value)} />
           </div>
-<<<<<<< HEAD
-          <div className="grid grid-cols-2 gap-3">
-=======
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
->>>>>>> 3078575 (Improve landing page and responsive design)
             <input className="input-field" placeholder="City / Municipality" value={form.city} onChange={(e) => update('city', e.target.value)} />
             <input className="input-field" placeholder="Barangay" value={form.barangay} onChange={(e) => update('barangay', e.target.value)} />
           </div>

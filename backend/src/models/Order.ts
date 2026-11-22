@@ -23,6 +23,8 @@ export interface IShippingAddress {
   street: string;
   postalCode: string;
   instructions?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface IOrder extends Document {
@@ -64,6 +66,8 @@ const ShippingAddressSchema = new Schema<IShippingAddress>(
     street: String,
     postalCode: String,
     instructions: String,
+    latitude: Number,
+    longitude: Number,
   },
   { _id: false }
 );

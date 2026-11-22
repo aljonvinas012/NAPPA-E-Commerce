@@ -1,5 +1,74 @@
-<<<<<<< HEAD
-=======
+# Round 14 — Web Push + Geolocation (final project requirements)
+- **Push notifications (customer):** may pop-up na sa phone/PC kapag nag-place ng order
+  ("Order placed — pending"), kapag nag-update ang admin ng status, at kapag na-cancel.
+  - Bagong `frontend/public/sw.js` (service worker) at `frontend/src/services/push.ts`.
+  - Button: **Profile menu → Enable notifications**. Dito lumalabas ang browser permission prompt.
+  - Kung **denied/blocked**, may malinaw na toast na nagsasabing i-allow sa browser settings.
+  - Backend: `web-push` + VAPID keys sa `backend/.env`, bagong `PushSubscription` model,
+    `/api/push/public-key`, `/api/push/subscribe`, `/api/push/unsubscribe`.
+- **Geolocation address picker:** sa **My Addresses → Add/Edit Address**, may
+  **map pin (OpenStreetMap/Leaflet)** — i-tap ang mapa o i-drag ang pin sa exact
+  delivery spot. May **"Use my current location"** button din na naglalagay ng pin
+  sa GPS position. Awtomatikong hinahanap ang **street, barangay, city, province,
+  region, at postal code** (Photon/OpenStreetMap, Nominatim bilang backup); pwede
+  pa ring i-edit. Kung may house number sa OpenStreetMap, kasama rin ito.
+  - May handling kapag **denied**, unavailable, o timeout ang location.
+  - Naka-save ang `latitude`/`longitude` sa address at ipinapasa sa order.
+  - May "View pinned location" link sa saved address (Google Maps).
+- **Paalala sa demo:** kailangan ng **HTTPS** (o `localhost`) ang push at geolocation.
+  Kapag `http://192.168.x.x` ang binuksan sa phone, hindi sila papayagan ng browser —
+  gumamit ng HTTPS tunnel (hal. `ngrok http 5173`) para sa live demo.
+
+# Round 13 — phone lang
+- Landing hero text + buttons itinaas pa (mga 18% ng taas ng screen) para nasa gitna-ibaba ng bundok. Web walang nagbago.
+
+# Round 12 — phone lang
+- Landing hero text: mas maliit ng kaunti (location badge, headline, paragraph) at itinaas ng kaunti. Web walang nagbago.
+
+# Round 11 — phone lang
+- Product Detail: Quantity, Add to Cart, Buy Now nasa **right** na sa phone.
+- Landing hero background sa phone: `public/videos/hero_mobile_portrait_mayon_sumlang.mp4` (poster: `hero-poster-portrait.jpg`). Web: `hero.mp4` pa rin.
+
+# Mga Update sa Nappa E-Commerce Site (Round 10) — Mobile touch-ups (phone lang, walang nagbago sa web)
+
+- **Portrait video sa phone:** `public/videos/hero_portrait.mp4` (+ poster `hero-poster-portrait.jpg`) ang gamit sa landing hero pag phone (< 768px); ang dati pa ring `hero.mp4` sa web. Nagpapalit ito kusa kung iikot ang phone/resize. (`HeroIntro.tsx`)
+- **Search bar:** nasa loob na ng header (katabi ng logo at icons), pinaliit para kasya sa phone.
+- **Add to Cart / Buy Now:** mas maliit at magkatabi na (Landing, Client Home, Products, Product Detail).
+- **Browse All Products / Track My Orders** (Client Home) at **Shop the Collection / Our Story** (Landing): mas maliit, magkatabi, nasa right.
+- Bagong utility class `.btn-compact` sa `index.css` (phone lang) para sa mga maliit na buttons.
+
+# Mga Update sa Nappa E-Commerce Site (Round 9) — Mobile layout polish
+
+**Phone lang ang ginalaw (< 768px). Hindi nagbago ang itsura/structure sa web (desktop/laptop).** Walang bagong package.
+
+- **Buttons nasa RIGHT na ulit sa phone:** Track Your Order / Order History, Admin Orders, Admin Users (card), pati Cart trash icon, Admin Products at Feedback actions. (Ugat: `index.css` stack-table rule na pilit naglalagay sa left.)
+- **Notification bell (client):** hindi na naputol — bumubukas na sa buong lapad ng screen sa phone; pag nag-tap sa labas, magsasara. Admin bell: sakto na rin ang lapad.
+- **Landing page:** hindi na naputol ang hero sa taas (lumalaki na ang hero ayon sa laman), mas maliit na text/spacing, buttons na full-width sa maliliit na phone, mas maayos na About / Products / Contact section (walang sobrang blank, mas maliit na padding ng form).
+- **Footer:** 1 column sa napakaliit na phone, 2 columns (brand sa taas) sa mas malaking phone, 3 columns sa sm pataas (tulad ng dati). Naka-wrap na ang email, may safe-area sa ibaba.
+- **Product cards:** sa phone, naka-stack na ang Add to Cart / Buy Now (full width) para hindi naiipit ang text. Mas masikip na gap/padding.
+- **Client Home / Product Detail / Cart / Checkout / Modals:** mas maliit na spacing at text sa phone, mas kasya ang laman, mas maliit ang padding ng modal.
+- **Header:** may sariling search bar na sa ilalim ng header sa phone (dati icon lang na pumupunta sa Products).
+- **Login/Register:** mas maliit na padding sa phone.
+
+# Mga Update sa Nappa E-Commerce Site (Round 8) — Phone access
+
+## Ano ang binago
+- **Gumagana na sa phone (iPhone at Android):** dati naka-hard-code ang API sa `localhost:5000`, kaya sa phone
+  (na ang "localhost" ay ang phone mismo) hindi maka-login/maka-load ng products. Ngayon sinusundan na nito ang address
+  na ginamit sa pagbukas ng page (`frontend/src/services/api.ts`). Pwede pa ring i-override gamit ang `VITE_API_URL`.
+- **Network access:** `vite.config.ts` (`host: true`) at backend (`0.0.0.0`) — naka-listen na sa WiFi/LAN. Ipi-print ng backend ang address na bubuksan sa phone.
+- **iPhone fixes:** hindi na nagza-zoom kapag nag-tap ng input (16px), tamang taas ng screen kahit gumagalaw ang address bar (`dvh`/`svh`),
+  safe-area para sa notch at home bar, mas mabilis na tap.
+- **Add to Home Screen:** may `manifest.webmanifest`, app icons (`public/icons/`), theme color.
+- Hero ng landing page ay eksaktong isang screen sa phone.
+
+## Gawin
+- Sundan ang **SETUP-GUIDE.md ▸ 8. Buksan sa PHONE** (parehong WiFi + i-allow ang Node.js sa Windows Firewall).
+- Kailangang naka-run ang backend + frontend + MongoDB sa computer habang ginagamit ang phone.
+- Walang bagong npm package; hindi na kailangang mag-`npm install` ulit.
+
+---
+
 # Mga Update sa Nappa E-Commerce Site (Round 7)
 
 ## ⚠️ Gawin bago i-run
@@ -84,7 +153,6 @@
 
 ---
 
->>>>>>> 3078575 (Improve landing page and responsive design)
 # Mga Update sa Nappa E-Commerce Site (Round 4)
 
 Ito yung listahan ng mga pagbabago base sa pinakahuling request mo (yung listahan

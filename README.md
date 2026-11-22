@@ -1,11 +1,5 @@
 # Nappa Food & Crafts Pasalubong Center — E-Commerce Website
 
-<<<<<<< HEAD
-A full-stack e-commerce site for Nappa Food & Crafts Pasalubong Center (Camalig, Albay),
-built with React + Vite + TypeScript on the frontend and Express + TypeScript + MongoDB on the backend.
-
-See **SETUP-GUIDE.md** for full step-by-step installation instructions.
-=======
 Full-stack e-commerce site para sa **Nappa Food & Crafts Pasalubong Center**
 (Sumlang, Camalig, Albay).
 
@@ -15,36 +9,10 @@ Full-stack e-commerce site para sa **Nappa Food & Crafts Pasalubong Center**
 
 > Step-by-step na installation: tingnan ang **SETUP-GUIDE.md**.
 > Listahan ng mga pagbabago bawat round: tingnan ang **UPDATE-NOTES.md**.
->>>>>>> 3078575 (Improve landing page and responsive design)
 
 ## Quick Start
 
 ```bash
-<<<<<<< HEAD
-# 1. Backend
-cd backend
-npm install
-npm run seed:admin      # creates admin@nappa.com / Admin123!
-npm run seed:products   # loads the sample Nappa product catalog
-npm run dev              # http://localhost:5000
-
-# 2. Frontend (separate terminal)
-cd frontend
-npm install
-npm run dev              # http://localhost:5173
-```
-
-Make sure MongoDB (local, via MongoDB Compass / MongoDB Community Server) is running on
-`mongodb://localhost:27017` before starting the backend.
-
-## Folder structure
-
-```
-nappa-ecommerce/
-├── backend/     Express + TypeScript API (auth, products, cart, orders, admin)
-└── frontend/    React + Vite + TypeScript storefront + admin dashboard
-```
-=======
 # 1. Backend  (Terminal 1)
 cd backend
 npm install
@@ -79,6 +47,11 @@ Siguraduhing tumatakbo ang MongoDB sa `mongodb://localhost:27017` bago i-start a
 - Customers (Manage Users): makikita agad ang User ID, phone, gender at address ng bawat user;
   Edit, Reset Password, Enable/Disable account (hindi makaka-login ang disabled)
 - Feedback: tingnan at i-delete ang sensitive na comments (nag-a-update ang rating ng product)
+
+**Phone-ready (iPhone at Android)**
+- Mabubuksan sa phone na naka-connect sa parehong WiFi: `http://<IP ng computer>:5173`
+  (step-by-step sa **SETUP-GUIDE.md ▸ Buksan sa PHONE**).
+- Awtomatikong nag-a-adjust ang layout sa kahit anong laki ng screen; may "Add to Home Screen" (parang app).
 
 **Responsive at Offline-ready**
 - Gumagana sa desktop, tablet, at phone — kahit paliitin ang browser window, nag-a-adjust ang layout
@@ -125,4 +98,3 @@ nappa-ecommerce/
 
 - Palitan ang `JWT_SECRET` sa `backend/.env` at ang default admin password.
 - Ang online payments (GCash, Maya, Card) ay wala pang totoong payment gateway.
->>>>>>> 3078575 (Improve landing page and responsive design)

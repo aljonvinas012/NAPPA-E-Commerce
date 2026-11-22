@@ -36,31 +36,31 @@ const ClientHome = () => {
     <div>
       {/* HERO BANNER — enlarged */}
       <section className="bg-cream/50 woven-pattern overflow-hidden">
-        <div className="container-nappa py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center min-h-[420px] md:min-h-[520px]">
+        <div className="container-nappa py-10 md:py-24 grid md:grid-cols-2 gap-8 md:gap-10 items-center md:min-h-[520px]">
           <div className="animate-fade-in-up">
             <span className="inline-block text-xs font-bold tracking-wide text-oliveDark bg-olive/10 px-3 py-1.5 rounded-full mb-4">
               New Season Pasalubong
             </span>
-            <h1 className="font-display text-4xl sm:text-5xl text-bark leading-tight mb-5">
+            <h1 className="font-display text-3xl min-[400px]:text-4xl sm:text-5xl text-bark leading-tight mb-4 sm:mb-5">
               Fresh finds from our Bicolano artisans
             </h1>
-            <p className="text-bark/70 mb-7 max-w-md text-base leading-relaxed">
+            <p className="text-bark/70 mb-6 sm:mb-7 max-w-md text-sm sm:text-base leading-relaxed">
               Explore handwoven abaca crafts, home pieces, and authentic pasalubong — freshly stocked this week.
             </p>
-            <div className="flex flex-wrap gap-3">
-              <button onClick={() => navigate('/shop/products')} className="btn-primary">Browse All Products</button>
-              <button onClick={() => navigate('/shop/orders')} className="btn-secondary">Track My Orders</button>
+            <div className="flex flex-nowrap justify-end md:justify-start md:flex-wrap gap-2 md:gap-3">
+              <button onClick={() => navigate('/shop/products')} className="btn-primary btn-compact">Browse All Products</button>
+              <button onClick={() => navigate('/shop/orders')} className="btn-secondary btn-compact">Track My Orders</button>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4 animate-fade-in-up" style={{ animationDelay: '.15s' }}>
-            <img src="/images/products/bag-1.jpg" className="rounded-card object-cover w-full h-48 sm:h-64 shadow-soft animate-float" />
-            <img src="/images/products/rug-2.jpg" className="rounded-card object-cover w-full h-48 sm:h-64 mt-8 shadow-soft animate-float" style={{ animationDelay: '.7s' }} />
+            <img src="/images/products/bag-1.jpg" className="rounded-card object-cover w-full h-36 min-[400px]:h-48 sm:h-64 shadow-soft animate-float" />
+            <img src="/images/products/rug-2.jpg" className="rounded-card object-cover w-full h-36 min-[400px]:h-48 sm:h-64 mt-6 sm:mt-8 shadow-soft animate-float" style={{ animationDelay: '.7s' }} />
           </div>
         </div>
       </section>
 
       {/* CATEGORIES — right-sized */}
-      <section className="container-nappa py-10">
+      <section className="container-nappa py-8 sm:py-10">
         <h2 className="font-display text-xl text-bark mb-4">Shop by Category</h2>
         <div className="flex gap-4 overflow-x-auto pb-2 -mx-1 px-1">
           {categories.map((c) => (
@@ -84,7 +84,7 @@ const ClientHome = () => {
               <h2 className="font-display text-xl text-bark">New Arrivals</h2>
               <button onClick={() => navigate('/shop/products')} className="text-sm font-semibold text-oliveDark">See all →</button>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
               {newArrivals.map((p, i) => (
                 <Reveal key={p._id} delay={(i % 4) * 70}>
                   <ProductCard product={p} />
@@ -99,7 +99,7 @@ const ClientHome = () => {
               <h2 className="font-display text-xl text-bark">Customer Favorites</h2>
               <button onClick={() => navigate('/shop/products')} className="text-sm font-semibold text-oliveDark">See all →</button>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
               {bestRated.map((p, i) => (
                 <Reveal key={p._id} delay={(i % 4) * 70}>
                   <ProductCard product={p} />

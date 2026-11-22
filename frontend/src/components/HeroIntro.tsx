@@ -4,6 +4,9 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 interface HeroIntroProps {
   videoSrc: string;
   poster?: string;
+  /** phone (portrait) version of the video + poster — used below 768px wide */
+  portraitSrc?: string;
+  portraitPoster?: string;
   logoSrc: string;
   brand?: string;
   tagline?: string;
@@ -28,6 +31,8 @@ const EXPAND_MS = 1500;
 const HeroIntro = ({
   videoSrc,
   poster,
+  portraitSrc,
+  portraitPoster,
   logoSrc,
   brand = 'Nappa Food & Crafts',
   tagline = 'Pasalubong Center · Sumlang, Camalig, Albay',
@@ -37,6 +42,26 @@ const HeroIntro = ({
   const reduceMotion = useReducedMotion();
   const [stage, setStage] = useState<Stage>(reduceMotion ? 'done' : 'drop');
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Phones get the portrait video, everything else keeps the landscape one.
+  const [isPhone, setIsPhone] = useState(
+    () => typeof window !== 'undefined' && !!portraitSrc && window.matchMedia('(max-width: 767px)').matches
+  );
+  useEffect(() => {
+    if (!portraitSrc) return;
+    const mq = window.matchMedia('(max-width: 767px)');
+    const onChange = () => setIsPhone(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, [portraitSrc]);
+  const activeSrc = isPhone && portraitSrc ? portraitSrc : videoSrc;
+  const activePoster = isPhone && portraitSrc ? portraitPoster || poster : poster;
+
+  // If the source switches (e.g. phone rotated) after the intro started, keep it playing
+  useEffect(() => {
+    if (stage !== 'drop') videoRef.current?.play().catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeSrc]);
 
   // Radius that just reaches the farthest corner of the screen.
   const [exactRadius] = useState(() =>
@@ -79,9 +104,10 @@ const HeroIntro = ({
       >
         <video
           ref={videoRef}
+          key={activeSrc}
           className="absolute inset-0 w-full h-full object-cover"
-          src={videoSrc}
-          poster={poster}
+          src={activeSrc}
+          poster={activePoster}
           muted
           loop
           playsInline

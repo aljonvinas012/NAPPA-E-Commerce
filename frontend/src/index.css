@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap');
-=======
->>>>>>> 3078575 (Improve landing page and responsive design)
 
 @tailwind base;
 @tailwind components;
@@ -10,7 +5,11 @@
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 
 body {
   margin: 0;
@@ -224,8 +223,6 @@ select.input-field {
   .auth-shell { grid-template-columns: 1fr; }
   .auth-side { display: none; }
 }
-<<<<<<< HEAD
-=======
 
 /* ------------------------------------------------------------------
    Responsive tables: below 768px every row turns into a stacked card
@@ -263,6 +260,83 @@ select.input-field {
   .stack-table td[data-label="Product"],
   .stack-table td[data-label="Order"],
   .stack-table td[data-label="Item"] { justify-content: flex-start; text-align: left; padding-bottom: 0.6rem !important; }
-  .stack-table td[data-label="Actions"] > div { flex-wrap: wrap; justify-content: flex-start; }
+  /* Action buttons (and the Cart trash icon) sit on the RIGHT of the card, like on desktop */
+  .stack-table td[data-label="Actions"],
+  .stack-table td[data-label=""] { justify-content: flex-end; text-align: right; }
+  .stack-table td[data-label="Actions"] > div { flex-wrap: wrap; justify-content: flex-end; }
 }
->>>>>>> 3078575 (Improve landing page and responsive design)
+
+
+/* ==================================================================
+   Phone support (iPhone Safari / Android Chrome)
+   ================================================================== */
+
+/* Phone browsers have a moving address bar, so 100vh is taller than what you
+   can actually see. Use the dynamic viewport height (dvh) where supported;
+   the plain vh line stays as a fallback for older phones. */
+.min-h-screen { min-height: 100vh; min-height: 100dvh; }
+.h-screen { height: 100vh; height: 100dvh; }
+.max-h-\[90vh\] { max-height: 90vh; max-height: 90dvh; }
+.auth-shell { min-height: 100vh; min-height: 100dvh; }
+/* Landing hero: exactly one phone screen on load (svh = height with the address bar showing) */
+.hero-full { height: 100vh; height: 100svh; min-height: 540px; }
+
+img, video, svg { max-width: 100%; }
+button, a, summary, label { touch-action: manipulation; } /* no 300ms tap delay / double-tap zoom */
+
+/* Keep content out of the notch / rounded corners / home bar */
+body {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+header.fixed, header.sticky { padding-top: env(safe-area-inset-top); }
+.fixed.bottom-5 { bottom: calc(1.25rem + env(safe-area-inset-bottom)); }
+
+@media (max-width: 767px) {
+  /* iPhone Safari zooms the whole page when you tap a field smaller than 16px */
+  input:not([type='checkbox']):not([type='radio']),
+  select,
+  textarea,
+  .input-field { font-size: 16px !important; }
+
+  /* comfortable finger-size buttons */
+  .btn-primary, .btn-secondary { min-height: 44px; }
+}
+
+
+/* ==================================================================
+   Mobile polish — everything below only applies on phones (< 768px),
+   so the desktop / laptop layout is untouched.
+   ================================================================== */
+@media (max-width: 767px) {
+  .container-nappa { padding-left: 1rem; padding-right: 1rem; }
+
+  /* Landing hero: grow with its content instead of cutting it off at the top */
+  .hero-full { height: auto; min-height: 100vh; min-height: 100svh; }
+
+  /* Slide-in-from-the-side reveals can poke past the screen edge on phones — fade up instead */
+  .reveal-left, .reveal-right { transform: translateY(24px); }
+
+  /* Rows in stacked cards: let long values wrap instead of overflowing */
+  .stack-table td { flex-wrap: wrap; word-break: break-word; }
+  .stack-table td[data-label="Order"],
+  .stack-table td[data-label="Product"],
+  .stack-table td[data-label="Item"] { flex-wrap: nowrap; }
+}
+
+@media (max-width: 640px) {
+  .auth-form-wrap { padding: 28px 18px; }
+  .auth-card h1 { font-size: 24px; }
+}
+
+/* Compact buttons — phones only. Add .btn-compact next to .btn-primary / .btn-secondary */
+@media (max-width: 767px) {
+  .btn-compact {
+    padding: 0.45rem 0.9rem !important;
+    min-height: 0 !important;
+    font-size: 0.75rem !important;
+    gap: 0.35rem !important;
+    white-space: nowrap;
+  }
+  .btn-compact.btn-tight { padding: 0.4rem 0.35rem !important; font-size: 0.7rem !important; }
+}

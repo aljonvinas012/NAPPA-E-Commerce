@@ -3,7 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/images/logo.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- viewport-fit=cover lets the page use the full screen on notched phones (safe-area padding is in index.css) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#6F4A32" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- "Add to Home Screen" (Android + iPhone) -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Nappa" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
     <title>Nappa Food & Crafts Pasalubong Center</title>
   </head>
   <body>

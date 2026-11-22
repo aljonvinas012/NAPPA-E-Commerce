@@ -10,6 +10,8 @@ export interface IAddress {
   postalCode: string;
   instructions?: string;
   isDefault: boolean;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface IUser {

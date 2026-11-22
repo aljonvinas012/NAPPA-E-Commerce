@@ -2,12 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { useToast } from '../context/ToastContext';
 import api from '../services/api';
+import { enablePushNotifications } from '../services/push';
 import type { INotification } from '../types';
 
 const Header = () => {
   const { user, logout } = useAuth();
   const { itemCount } = useCart();
+  const { showToast } = useToast();
   const navigate = useNavigate();
 
   const [search, setSearch] = useState('');
@@ -16,6 +19,23 @@ const Header = () => {
   const [notifications, setNotifications] = useState<INotification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const menuRef = useRef<HTMLDivElement>(null);
+  const notifRef = useRef<HTMLDivElement>(null);
+
+  // Close the notification panel when tapping/clicking anywhere outside it.
+  // (The old full-screen overlay only covered the header, because the header's
+  // backdrop-blur traps `fixed` children, so tapping the page did nothing.)
+  useEffect(() => {
+    if (!notifOpen) return;
+    const close = (e: Event) => {
+      if (notifRef.current && !notifRef.current.contains(e.target as Node)) setNotifOpen(false);
+    };
+    document.addEventListener('mousedown', close);
+    document.addEventListener('touchstart', close, { passive: true });
+    return () => {
+      document.removeEventListener('mousedown', close);
+      document.removeEventListener('touchstart', close);
+    };
+  }, [notifOpen]);
 
   const loadNotifications = async () => {
     try {
@@ -69,41 +89,43 @@ const Header = () => {
     logout();
   };
 
+  // Must run from a click, because browsers only show the permission prompt
+  // after a user gesture.
+  const handleEnablePush = async () => {
+    setProfileOpen(false);
+    const result = await enablePushNotifications();
+    showToast(result.message, result.status === 'subscribed' ? 'success' : 'error');
+  };
+
   return (
     <header className="sticky top-0 z-40 bg-paper/95 backdrop-blur border-b border-tan/30">
-      <div className="container-nappa flex items-center gap-3 py-3">
+      <div className="container-nappa flex items-center gap-2 sm:gap-3 py-3">
         <Link to="/shop" className="flex items-center gap-2 shrink-0">
-          <img src="/images/logo.png" alt="Nappa logo" className="w-10 h-10 object-contain" />
+          <img src="/images/logo.png" alt="Nappa logo" className="w-9 h-9 sm:w-10 sm:h-10 object-contain" />
           <span className="hidden md:block font-display text-base leading-tight text-bark">
             Nappa Food & Crafts<br /><span className="text-xs font-body font-normal text-bark/60">Pasalubong Center</span>
           </span>
         </Link>
 
-        <form onSubmit={handleSearch} className="flex-1 max-w-lg mx-auto hidden sm:block">
+        <form onSubmit={handleSearch} className="flex-1 min-w-0 max-w-lg sm:mx-auto">
           <div className="input-icon-wrap">
-            <i className="fas fa-magnifying-glass" />
+            <i className="fas fa-magnifying-glass max-sm:!left-3 max-sm:!text-xs" />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search products, categories..."
-              className="input-field"
+              placeholder={typeof window !== 'undefined' && window.innerWidth < 640 ? 'Search' : 'Search products, categories...'}
+              className="input-field min-w-0 max-sm:!py-1.5 max-sm:!pl-8 max-sm:!pr-2"
             />
           </div>
         </form>
 
-        <div className="flex items-center gap-1 sm:gap-2 ml-auto">
-          <button
-            onClick={() => navigate('/shop/products')}
-            className="sm:hidden w-9 h-9 flex items-center justify-center rounded-full hover:bg-cream text-base text-bark"
-            aria-label="Search"
-          >
-            <i className="fas fa-magnifying-glass" />
-          </button>
-
-          <div className="relative">
+        <div className="flex items-center gap-0.5 sm:gap-2 sm:ml-auto shrink-0">
+          {/* On phones the bell's panel is positioned against the full-width header
+              (not the bell), so it can never run off the left edge of the screen. */}
+          <div className="sm:relative" ref={notifRef}>
             <button
               onClick={() => { setNotifOpen((v) => !v); setProfileOpen(false); }}
-              className="relative w-9 h-9 flex items-center justify-center rounded-full hover:bg-cream text-base text-bark"
+              className="relative w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-full hover:bg-cream text-base text-bark"
               aria-label="Notifications"
             >
               <i className="fas fa-bell" />
@@ -115,8 +137,7 @@ const Header = () => {
             </button>
             {notifOpen && (
               <>
-                <div className="fixed inset-0 z-40" onClick={() => setNotifOpen(false)} />
-                <div className="absolute right-0 mt-2 w-80 max-w-[90vw] card-surface shadow-card z-50 animate-pop-in max-h-96 overflow-y-auto">
+                <div className="absolute left-3 right-3 top-full mt-2 sm:left-auto sm:right-0 sm:w-80 card-surface shadow-card z-50 animate-pop-in max-h-[70vh] sm:max-h-96 overflow-y-auto">
                   <div className="flex items-center justify-between px-4 py-3 border-b border-tan/30">
                     <span className="font-semibold text-sm text-ink">Notifications</span>
                     <button onClick={handleMarkAllRead} className="text-xs text-oliveDark font-semibold hover:underline">
@@ -148,7 +169,7 @@ const Header = () => {
 
           <button
             onClick={() => navigate('/shop/cart')}
-            className="relative w-9 h-9 flex items-center justify-center rounded-full hover:bg-cream text-base text-bark"
+            className="relative w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-full hover:bg-cream text-base text-bark"
             aria-label="Cart"
           >
             <i className="fas fa-bag-shopping" />
@@ -161,7 +182,7 @@ const Header = () => {
 
           <button
             onClick={() => navigate('/shop/orders')}
-            className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-cream text-base text-bark"
+            className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-full hover:bg-cream text-base text-bark"
             aria-label="Order tracking"
           >
             <i className="fas fa-truck-fast" />
@@ -170,7 +191,7 @@ const Header = () => {
           <div className="relative" ref={menuRef}>
             <button
               onClick={() => { setProfileOpen((v) => !v); setNotifOpen(false); }}
-              className="w-9 h-9 flex items-center justify-center rounded-full bg-olive text-paper font-bold text-sm"
+              className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-full bg-olive text-paper font-bold text-sm"
               aria-label="Profile menu"
             >
               {user?.firstName?.[0]?.toUpperCase() || 'U'}
@@ -185,6 +206,7 @@ const Header = () => {
                   </div>
                   <Link to="/shop/profile" onClick={() => setProfileOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm hover:bg-cream/50"><i className="fas fa-user w-4 text-bark/50" /> Edit Profile</Link>
                   <Link to="/shop/addresses" onClick={() => setProfileOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm hover:bg-cream/50"><i className="fas fa-location-dot w-4 text-bark/50" /> My Addresses</Link>
+                  <button onClick={handleEnablePush} className="w-full flex items-center gap-2.5 text-left px-4 py-2.5 text-sm hover:bg-cream/50"><i className="fas fa-bell w-4 text-bark/50" /> Enable notifications</button>
                   <Link to="/shop/settings" onClick={() => setProfileOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm hover:bg-cream/50"><i className="fas fa-gear w-4 text-bark/50" /> Settings</Link>
                   <button onClick={handleLogout} className="w-full flex items-center gap-2.5 text-left px-4 py-2.5 text-sm text-red-500 hover:bg-red-50"><i className="fas fa-right-from-bracket w-4" /> Logout</button>
                 </div>
@@ -193,6 +215,7 @@ const Header = () => {
           </div>
         </div>
       </div>
+
     </header>
   );
 };

@@ -25,20 +25,22 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.7.3",
     "multer": "^2.2.0",
+    "qrcode": "^1.5.4",
     "speakeasy": "^2.0.0",
-    "qrcode": "^1.5.4"
+    "web-push": "^4.0.0"
   },
   "devDependencies": {
-  "@types/bcryptjs": "^2.4.6",
-  "@types/cors": "^2.8.19",
-  "@types/express": "^5.0.6",
-  "@types/jsonwebtoken": "^9.0.7",
-  "@types/multer": "^2.1.0",
-  "@types/node": "^26.0.1",
-  "@types/speakeasy": "^2.0.10",
-  "@types/qrcode": "^1.5.5",
-  "nodemon": "^3.1.14",
-  "ts-node": "^10.9.2",
-  "typescript": "^6.0.3"
-}
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/multer": "^2.1.0",
+    "@types/node": "^26.0.1",
+    "@types/qrcode": "^1.5.5",
+    "@types/speakeasy": "^2.0.10",
+    "@types/web-push": "^3.6.4",
+    "nodemon": "^3.1.14",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  }
 }

@@ -56,7 +56,7 @@ const ProductDetail = () => {
       <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-sm font-semibold text-bark/60 hover:text-oliveDark mb-5">
         <i className="fas fa-arrow-left" /> Back
       </button>
-      <div className="grid md:grid-cols-2 gap-10">
+      <div className="grid md:grid-cols-2 gap-6 md:gap-10">
         <div>
           <div className="aspect-square rounded-card overflow-hidden bg-cream/40 mb-3">
             <img src={getImageUrl(product.images[activeImage])} alt={product.name} className="w-full h-full object-cover" />
@@ -98,7 +98,7 @@ const ProductDetail = () => {
           </p>
 
           {!outOfStock && (
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center justify-end sm:justify-start gap-3 mb-6">
               <span className="text-sm font-semibold">Quantity</span>
               <div className="flex items-center border border-tan/50 rounded-soft">
                 <button onClick={() => setQuantity((q) => Math.max(1, q - 1))} className="w-9 h-9 text-lg">−</button>
@@ -113,18 +113,18 @@ const ProductDetail = () => {
             </div>
           )}
 
-          <div className="flex gap-3">
+          <div className="flex justify-end sm:justify-start gap-2 sm:gap-3">
             <button
               disabled={outOfStock}
               onClick={() => { if (guard()) addToCart(product._id, quantity); }}
-              className="btn-secondary flex-1"
+              className="btn-secondary btn-compact sm:flex-1"
             >
               Add to Cart
             </button>
             <button
               disabled={outOfStock}
               onClick={() => { if (guard()) navigate('/shop/checkout', { state: { buyNow: { productId: product._id, quantity } } }); }}
-              className="btn-primary flex-1"
+              className="btn-primary btn-compact sm:flex-1"
             >
               Buy Now
             </button>

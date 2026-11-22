@@ -3,8 +3,14 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  publicDir: 'public',  // ✅ Dapat naka-set to 'public'
+  publicDir: 'public',
   server: {
+    host: true, // listen on the Wi-Fi/LAN address too, so phones can open it
+    port: 5173,
+    strictPort: true,
+  },
+  preview: {
+    host: true,
     port: 5173,
     strictPort: true,
   },

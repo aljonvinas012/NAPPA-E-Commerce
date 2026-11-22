@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { NavLink, useNavigate, Outlet, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import api, { getImageUrl } from '../services/api';
+import api from '../services/api';
 
 const links = [
   { to: '/admin', label: 'Dashboard', icon: 'fa-chart-pie', end: true },
@@ -86,7 +86,7 @@ const OrderNotificationBell = () => {
         )}
       </button>
       {open && (
-        <div className="absolute right-0 mt-2 w-80 max-w-[90vw] card-surface p-0 overflow-hidden shadow-xl z-30">
+        <div className="absolute right-0 mt-2 w-[calc(100vw-2rem)] sm:w-80 card-surface p-0 overflow-hidden shadow-xl z-30">
           <div className="px-4 py-3 border-b border-tan/20 flex items-center justify-between">
             <p className="font-semibold text-sm text-ink">Notifications</p>
             <button onClick={markAllRead} className="text-xs text-oliveDark font-semibold hover:underline">

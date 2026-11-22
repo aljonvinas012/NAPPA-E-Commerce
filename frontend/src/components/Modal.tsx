@@ -12,7 +12,7 @@ const Modal = ({ open, onClose, title, children, maxWidth = 'max-w-md' }: ModalP
   if (!open) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 backdrop-blur-sm p-4 animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 backdrop-blur-sm p-3 sm:p-4 animate-fade-in"
       onClick={onClose}
     >
       <div
@@ -20,7 +20,7 @@ const Modal = ({ open, onClose, title, children, maxWidth = 'max-w-md' }: ModalP
         onClick={(e) => e.stopPropagation()}
       >
         {title && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-tan/30 sticky top-0 bg-paper">
+          <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-tan/30 sticky top-0 bg-paper">
             <h3 className="font-display text-lg text-bark">{title}</h3>
             <button
               onClick={onClose}
@@ -31,7 +31,7 @@ const Modal = ({ open, onClose, title, children, maxWidth = 'max-w-md' }: ModalP
             </button>
           </div>
         )}
-        <div className="p-6">{children}</div>
+        <div className="p-4 sm:p-6">{children}</div>
       </div>
     </div>
   );

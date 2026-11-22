@@ -9,7 +9,6 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import Modal from '../../components/Modal';
 
 const SHIPPING_FEE = 80;
-const regions = ['Metro Manila', 'North Luzon', 'South Luzon', 'Visayas', 'Mindanao'];
 
 interface LineItem {
   productId: string;
@@ -260,7 +259,7 @@ const Checkout = () => {
                       <tr key={i.productId} className="border-b border-tan/15 last:border-0">
                         <td className="py-2 px-3 flex items-center gap-2">
                           <img src={getImageUrl(i.image)} className="w-10 h-10 rounded-soft object-cover shrink-0" />
-                          <span className="truncate max-w-[160px] font-medium text-ink">{i.name}</span>
+                          <span className="truncate max-w-[110px] sm:max-w-[160px] font-medium text-ink">{i.name}</span>
                         </td>
                         <td className="py-2 px-3 text-bark/70 whitespace-nowrap">Qty {i.quantity}</td>
                         <td className="py-2 px-3 text-right font-semibold text-ink whitespace-nowrap">₱{(i.price * i.quantity).toLocaleString()}</td>
@@ -297,12 +296,12 @@ const Checkout = () => {
           {/* Subtotal / shipping / total — directly above the Place Order button */}
           <div className="p-5">
             <div className="space-y-1.5 text-sm mb-4">
-              <div className="flex justify-between gap-8 text-bark/70"><span>Subtotal</span><span>₱{subtotal.toLocaleString()}</span></div>
-              <div className="flex justify-between gap-8 text-bark/70">
+              <div className="flex justify-between gap-4 sm:gap-8 text-bark/70"><span>Subtotal</span><span>₱{subtotal.toLocaleString()}</span></div>
+              <div className="flex justify-between gap-4 sm:gap-8 text-bark/70">
                 <span>Shipping Fee {groups.length > 1 ? `(${groups.length} orders)` : ''}</span>
                 <span>{freeShipping ? <span className="text-oliveDark font-semibold">FREE</span> : `₱${totalShipping.toLocaleString()}`}</span>
               </div>
-              <div className="flex justify-between gap-8 font-semibold text-ink text-base pt-1 border-t border-tan/20"><span>Total</span><span>₱{total.toLocaleString()}</span></div>
+              <div className="flex justify-between gap-4 sm:gap-8 font-semibold text-ink text-base pt-1 border-t border-tan/20"><span>Total</span><span>₱{total.toLocaleString()}</span></div>
             </div>
             <div className="flex justify-end">
               <button onClick={handlePlaceOrder} disabled={placing} className="btn-primary !py-2.5 !px-6 text-sm">

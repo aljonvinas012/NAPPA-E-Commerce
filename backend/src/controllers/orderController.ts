@@ -6,6 +6,7 @@ import User from '../models/User';
 import Notification from '../models/Notification';
 import { generateOrderNumber } from '../utils/orderNumber';
 import { checkLowStockAndNotify } from './productController';
+import { sendPushToUser } from './pushController';
 
 const SHIPPING_FEE = 80;
 
@@ -109,6 +110,8 @@ export const createOrder = async (req: Request, res: Response) => {
       street: address.street,
       postalCode: address.postalCode,
       instructions: address.instructions,
+      latitude: address.latitude,
+      longitude: address.longitude,
     };
 
     const createdOrders = [];
@@ -137,6 +140,12 @@ export const createOrder = async (req: Request, res: Response) => {
         type: 'order_placed',
         title: 'Order placed successfully',
         message: `Your order ${order.orderNumber} (${category}) has been placed and is being prepared.`,
+      });
+
+      void sendPushToUser(req.userId, {
+        title: 'Order placed — pending',
+        body: `Order ${order.orderNumber} is pending. We'll update you when its status changes.`,
+        url: '/shop/orders',
       });
 
       await notifyAdmins(
@@ -241,6 +250,12 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
       message: `Your order ${order.orderNumber} is now "${status}".`,
     });
 
+    void sendPushToUser(order.user.toString(), {
+      title: `Order ${status}`,
+      body: `Order ${order.orderNumber} is now "${status}".`,
+      url: '/shop/orders',
+    });
+
     res.json(order);
   } catch (error) {
     res.status(500).json({ message: 'Could not update order status.' });
@@ -295,6 +310,12 @@ export const cancelOrder = async (req: Request, res: Response) => {
       type: 'order_status',
       title: 'Order cancelled',
       message: `Your order ${order.orderNumber} has been cancelled.`,
+    });
+
+    void sendPushToUser(order.user.toString(), {
+      title: 'Order cancelled',
+      body: `Order ${order.orderNumber} has been cancelled.`,
+      url: '/shop/orders',
     });
 
     await notifyAdmins(

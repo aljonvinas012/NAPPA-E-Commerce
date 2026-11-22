@@ -1,7 +1,15 @@
 import axios from 'axios';
 
+// The API lives on the same computer as the website, on port 5000.
+// Using the hostname the page was opened from (instead of a hard-coded
+// "localhost") lets a phone on the same Wi-Fi reach it: on the phone,
+// "localhost" would mean the phone itself, not the computer.
+// To point somewhere else (tunnel / deployed server) set VITE_API_URL in frontend/.env
+const API_URL: string =
+  import.meta.env.VITE_API_URL || `${window.location.protocol}//${window.location.hostname}:5000/api`;
+
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: API_URL,
 });
 
 api.interceptors.request.use((config) => {

@@ -6,7 +6,7 @@ dist/
 build/
 *.tsbuildinfo
 
-# Environment variables 
+# Environment variables / secrets (huwag i-commit!)
 .env
 .env.*
 !.env.example
